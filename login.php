@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Log In</title>
+<link href='http://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'>
+<link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
+<body>
+<div id="wrapper">
+	<div id="header-wrapper">
+		<div id="header">
+			<div id="logo">
+				<h1>To Do</h1>
+				<p>My To DO List</p>
+			</div>
+		</div>
+	</div>
+	<!-- end #header -->
+	<div id="menu">
+		<ul>
+			<li><a href="index.php">Homepage</a></li>
+			<ri class="current_page_item"><a href="#">Log In</a></ri>
+		</ul>
+	</div>
+	<!-- end #menu -->
+	<div id="page">
+		<div id="page-bgtop">
+			<div id="page-bgbtm">
+					<div class="post">
+						<h2 class="title"><font color="black">Please enter your log-in information</font></h2>
+						<div class="entry">
+						  <form action="index.php" method="post">
+                          <table border="1" cellspacing="3" cellpadding="3">
+                              <tr>
+                                <td>User ID:</td>
+                                <td><input type="text" size=40 name="userid" /></td>
+                              </tr>
+                              <tr>
+                                <td>Password:</td>
+                                <td><input type="password" size=40 name="password" /></td>
+                              </tr>
+                            </table>
+                            <input type="submit" value="Log On" />
+                            <input type="reset" value="Clear" />
+                          </form>
+                          <?php
+						  	if ($_GET["success"])
+							{
+								echo "<font color=red>Your login information was incorrect; please try again.</font>";
+							}
+						  ?>
+				  </div>
+					<div style="clear: both;">&nbsp;</div>
+				</div>
+				<div class="post">
+						<h2 class="title"><font color="black">Sign Up</font></h2>
+						<div class="entry">
+						  <form action="newuser.php" method="post">
+                          <table border="1" cellspacing="3" cellpadding="3">
+                              <tr>
+                                <td>User ID:</td>
+                                <td><input type="text" size=40 name="userid" /></td>
+                              </tr>
+										<tr>
+                                <td>Email:</td>
+                                <td><input type="text" size=40 name="email" /></td>
+                              </tr>
+                              <tr>
+                                <td>Password:</td>
+                                <td><input type="password" size=40 name="password" /></td>
+                              </tr>
+                            </table>
+                            <input type="submit" value="Create" />
+                            <input type="reset" value="Clear" />
+                          </form>
+                          <?php
+						  	if ($_GET["failure"])
+							{
+								echo "<font color=red>Your username is already taken; please try again.</font>";
+							}
+						  ?>
+					   </div>
+				  </div>
+					<div style="clear: both;">&nbsp;</div>
+				</div>
+				<!-- end #content -->
+				<div id="sidebar">
+					<ul>
+						<li></li>
+						<li> </li>
+					</ul>
+				</div>
+				<!-- end #sidebar -->
+				<div style="clear: both;">&nbsp;</div>
+			</div>
+		</div>
+	</div>
+	<!-- end #page -->
+</div>
+<div id="footer">
+	<p>Copyright (c) 2012 Matt Kopecki. All rights reserved.</p>
+</div>
+<!-- end #footer -->
+</body>
+</html>
