@@ -15,26 +15,43 @@
 <script>
 $(document).ready(function(){
     $('input').keyup(function(e){
-        if(e.which==39)
+        if(e.which==40)      // 40 is down arrow
+            $(this).closest('li').next().find('input').focus();
+        else if(e.which==38) // 38 is up arrow
+            $(this).closest('li').prev().find('input').focus();
+        /*
+        if(e.which==39)      // 39 is right arrow
             $(this).closest('td').next().find('input').focus();
-        else if(e.which==37)
+        else if(e.which==37) // 37 is left arrow
             $(this).closest('td').prev().find('input').focus();
-        else if(e.which==40)
+        else if(e.which==40) // 40 is down arrow
             $(this).closest('tr').next().find('td:eq('+$(this).closest('td').index()+')').find('input').focus();
-        else if(e.which==38)
+        else if(e.which==38) // 38 is up arrow
             $(this).closest('tr').prev().find('td:eq('+$(this).closest('td').index()+')').find('input').focus();
+        */
     });
 });
 </script>
 <script language="javascript">
 
-function addRow(tableID) {
-    var table = document.getElementById(tableID);
+function addRow(listID) {
+    /*
+    var table = document.getElementById(listID);
 
     var rowCount = table.rows.length;
     var row = table.insertRow(rowCount);
 
     var cell1 = row.insertCell(0);
+*/
+
+    var list = document.getElementById(listID);
+    var newLI = document.createElement("li");
+
+    newLI.appendChild(document.createTextNode("this is a test"));
+
+    list.insertBefore(newLI, list.firstChild);
+
+/*
     var element1 = document.createElement("input");
     element1.type = "text";
     element1.size = "80";
@@ -43,6 +60,7 @@ function addRow(tableID) {
     //element1.onkeypress="enterKeyPress(event,'.$ListID.');"
     cell1.appendChild(element1);
     element1.focus();
+    */
 }
 
 function deleteRow(tableID,itemID) {
@@ -129,17 +147,24 @@ function saveTask(itemId,listId,textValue) {
 	    	$contents = list_contents($ListID);
 
 		echo '<form action="todo.php" method="POST">';
-		echo '<table id="list'.$ListID.'" align="left"  border="0" style="clear:both">';
+		echo '<div id="list'.$ListID.'" align="left"  border="0" style="clear:both">';
+        echo '<ul>';
 
 		foreach ($contents as $task)
 		{
 			$Title = $task["Title"];
 			$TaskID = $task["TaskID"];
 
-			echo '<tr><td align="left"><input name="task[]" type="text" id="'.$TaskID.'" value="'.$Title.'" size="80" onkeypress="enterKeyPress(event,'.$ListID.');" onblur="saveTask('.$TaskID.','.$ListID.',this.value);"></td><td><input type="button" id="delete'.$ListID.'t'.$TaskID.'" value="X" onclick="deleteRow(\'list'.$ListID.'\', \'delete'.$ListID.'t'.$TaskID.'\')" style=""/></td></tr>';
+			echo '<li align="left">
+                <div style="white-space:nowrap;">
+                    <input type="text" name="task[]" id="'.$TaskID.'" value="'.$Title.'" size="60" onkeypress="enterKeyPress(event,'.$ListID.');" onblur="saveTask('.$TaskID.','.$ListID.',this.value);">
+                    <input type="button" id="delete'.$ListID.'t'.$TaskID.'" value="X" onclick="deleteRow(\'list'.$ListID.'\', \'delete'.$ListID.'t'.$TaskID.'\')" style="display:block; float:right;"/>
+                </div>
+                </li>';
 
 		}
-		echo '</table>';
+        echo '</ul>';
+		echo '</div>';
 		echo '</form>';
 		echo '<input type="button" id="add'.$ListID.'" value="Add Row" onclick="addRow(\'list'.$ListID.'\')" style="visibility:hidden"/>  </div>';
 	    }
@@ -166,18 +191,24 @@ function saveTask(itemId,listId,textValue) {
 	    	$contents = list_contents($ListID);
 
 		echo '<form action="todo.php" method="POST">';
-		echo '<table id="list'.$ListID.'" align="left" border="0">';
+		echo '<div id="list'.$ListID.'" align="left" border="0"><ul>';
 
 		foreach ($contents as $task)
 		{
 			$Title = $task["Title"];
 			$TaskID = $task["TaskID"];
 
-			echo '<tr><td align="left"><input name="task[]" type="text" id="'.$TaskID.'" value="'.$Title.'" size="80" onkeypress="enterKeyPress(event,'.$ListID.');" onblur="saveTask('.$TaskID.','.$ListID.',this.value);"></td></tr>';
-		}
-		echo '</table>';
-		echo '</form>';
-		echo '<input type="button" id="add'.$ListID.'" value="Add Row" onclick="addRow(\'list'.$ListID.'\')" style="visibility:hidden"/>';
+			echo '<li align="left">
+                <div style="white-space:nowrap;">
+                    <input type="text" name="task[]" id="'.$TaskID.'" value="'.$Title.'" size="60" onkeypress="enterKeyPress(event,'.$ListID.');" onblur="saveTask('.$TaskID.','.$ListID.',this.value);">
+                    <input type="button" id="delete'.$ListID.'t'.$TaskID.'" value="X" onclick="deleteRow(\'list'.$ListID.'\', \'delete'.$ListID.'t'.$TaskID.'\')" style="display:block; float:right;"/>
+                </div>
+                </li>';
+
+        }
+        echo '</ul></div>';
+        echo '</form>';
+        echo '<input type="button" id="add'.$ListID.'" value="Add Row" onclick="addRow(\'list'.$ListID.'\')" style="visibility:hidden"/>';
 	    }
 	}
 ?>
@@ -205,7 +236,8 @@ function saveTask(itemId,listId,textValue) {
     $overview = imap_fetch_overview($mailbox,"1:$msgCount",0);
     $size=sizeof($overview);
 
-    echo '<table border="0" cellspacing="0" width="100%">';
+    //echo '<table border="0" cellspacing="0" width="100%">';
+    echo '<dl>';
 
     for($i=$size-1; $i>=0; $i--)
     {
@@ -236,10 +268,18 @@ function saveTask(itemId,listId,textValue) {
     	$body = substr($body,0,59) ."...";
     }
 
-    	echo "<tr><td colspan=\"2\">$from</td><td colspan=\"2\">$subject</td><td class=\"tblContent\" colspan=\"2\">$date</td></tr><tr><td colspan='6' style='font-size:12px'>$body</td></tr>\n";
+    	echo '<dt>
+                <div style="white-space:nowrap; display:block;">
+                <span align="left">'.$from.'</span>
+                <span>'.$subject.'</span>
+                <span style="float:right">'.$date.'</span>
+                </div>
+            </dt>
+            <dd>'.$body.'</dd>';
     }
 
-    echo "</table>";
+    //echo "</table>";
+    echo '</dl>';
 
     imap_close($mailbox);
 ?>

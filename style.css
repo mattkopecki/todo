@@ -2,7 +2,7 @@ body {
 	margin: 0;
 	padding: 0;
 	background: white;
-	font-family: 'proxima-nova', Helvetica, sans-serif;
+	font-family: 'proxima-nova', Helvetica, Arial, sans-serif;
 	font-size: 14px;
 }
 
@@ -31,7 +31,18 @@ p, ul, ol {
 	line-height: 180%;
 }
 
-ul, ol {
+ul {
+	list-style: none;
+	margin-left: 0;
+	padding: 0;
+}
+
+li {
+	background-color: transparent;
+}
+
+li:hover {
+	background-color: yellow;
 }
 
 a {
@@ -105,7 +116,7 @@ input[type="text"] {
 }
 
 input:focus {
-	/*background-color:yellow;*/
+	background-color:transparent;
 	outline: none;
 }
 
