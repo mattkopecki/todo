@@ -45,6 +45,34 @@ li:hover {
 	background-color: yellow;
 }
 
+dt {
+	font-size: 14px;
+}
+
+dd {
+
+}
+
+.from {
+	font-size: 18px;
+	text-align: left;
+	font-weight: 900;
+}
+
+.subject {
+
+}
+
+.maildate {
+	font-size: 12px;
+	float: right;
+	color: blue;
+}
+
+.mailbody {
+	color: #C0C0C0;
+}
+
 a {
 	text-decoration: none;
 }

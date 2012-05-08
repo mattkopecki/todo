@@ -32,6 +32,8 @@
         $UserID = false;
         header('Location: login.php');
     }
+
+    check_for_captio();
 ?>
 
 
@@ -51,18 +53,9 @@ $(document).ready(function(){
             $(this).closest('li').next().find('input').focus();
         else if(e.which==38) // 38 is up arrow
             $(this).closest('li').prev().find('input').focus();
-        /*
-        if(e.which==39)      // 39 is right arrow
-            $(this).closest('td').next().find('input').focus();
-        else if(e.which==37) // 37 is left arrow
-            $(this).closest('td').prev().find('input').focus();
-        else if(e.which==40) // 40 is down arrow
-            $(this).closest('tr').next().find('td:eq('+$(this).closest('td').index()+')').find('input').focus();
-        else if(e.which==38) // 38 is up arrow
-            $(this).closest('tr').prev().find('td:eq('+$(this).closest('td').index()+')').find('input').focus();
-        */
     });
 });
+
 </script>
 <script language="javascript">
 
@@ -74,16 +67,8 @@ function addRow(listID) {
     element.type = "text";
     element.size = "80";
     element.name = "task[]";
+
     newLI.appendChild(element);
-
-    /*
-    var newHtml = '<div style="white-space:nowrap;">
-                    <input type="text" name="task[]" id="-1" value="" size="60" onkeypress="enterKeyPress(event,'+listID+');" onblur="saveTask(-1,'+listID+',this.value);">
-                    <input type="button" id="delete'+listID+'t-1" value="X" onclick="deleteRow(\'list'+listID+'\', \'delete'+listID+'t-1\')" style="display:block; float:right;"/>
-                </div>'
-    newLI.innerHTML(newHtml);
-    */
-
     list.insertBefore(newLI, list.lastChild.nextSibling);
     element.focus();
 }
@@ -106,7 +91,6 @@ function deleteRow(listID,itemID) {
     }
 
     shouldDelete(listID, itemID, firstRow);
-
   }
   catch(e) {
     alert(e);
@@ -279,8 +263,30 @@ function saveTask(itemId,listId,textValue) {
 
     	list($dayName,$day,$month,$year,$time) = preg_split("/ /",$date);
         $time = substr($time,0,5);
-    	$date = $month ." ". $day .", ". $year . " ". $time;
+        $date = $year."-".$month."-".$day;
 
+
+        // convert the date display to a more natural format
+        if (date('Y-m-d') == date('Y-m-d', strtotime((string)$date)))
+        {
+            $date = $time;
+        }
+        else if ($date < strtotime('-7 days'))
+        {
+            if (strcasecmp($dayName, "Mon,")==0) $date = "Monday";
+            else if (strcasecmp($dayName, "Tue,")==0) $date = "Tuesday";
+            else if (strcasecmp($dayName, "Wed,")==0) $date = "Wednesday";
+            else if (strcasecmp($dayName, "Thu,")==0) $date = "Thursday";
+            else if (strcasecmp($dayName, "Fri,")==0) $date = "Friday";
+            else if (strcasecmp($dayName, "Sat,")==0) $date = "Saturday";
+            else if (strcasecmp($dayName, "Sun,")==0) $date = "Sunday";
+        }
+        else
+        {
+            $date = $month."-".$day."-".$year;
+        }
+
+        // check for any emails from Captio
         preg_match('/\b(capt\w+)\b/', $from, $match);
         if ($match)
         {
@@ -288,11 +294,8 @@ function saveTask(itemId,listId,textValue) {
             $success = parse_from_captio($subject, $messageBody, $_COOKIE["UserID"]);
             if ($success)
             {
-                // move to archived mailbox
-                //$mbox = imap_open('{imap.gmail.com:993/imap/ssl}[Gmail]/All Mail', $Username, $Password) or die("Could not open All Mail");
                 imap_mail_move($mailbox, $sequence, '[Gmail]/All Mail');
                 imap_expunge($mailbox);
-                // might need to be break 2; or break 3; or maybe continue;
                 continue;  // process the next message and don't add this one to the Messages box
             }
             else {
@@ -315,12 +318,14 @@ function saveTask(itemId,listId,textValue) {
 
     	echo '<dt>
                 <div style="white-space:nowrap; display:block;">
-                <span align="left">'.$from.'</span>
-                <span>'.$subject.'</span>
-                <span style="float:right">'.$date.'</span>
+                <span class="from">'.$from.'</span>
+                <span class="maildate">'.$date.'</span>
                 </div>
             </dt>
-            <dd>'.$body.'</dd>';
+            <dd>
+                <div class="subject">'.$subject.'</div>
+                <div class="mailbody">'.$body.'</div>
+            </dd>';
     }
 
     echo '</dl>';

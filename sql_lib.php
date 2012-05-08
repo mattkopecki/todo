@@ -108,6 +108,50 @@
 		}
 	}
 
+	function check_for_captio()
+	{
+	    $ServerName = "{imap.gmail.com:993/imap/ssl}INBOX";
+	    $Username = "mattkopecki@gmail.com";
+	    $Password = "Iceman282";
+
+	    $mailbox = imap_open($ServerName, $Username, $Password) or die("Could not open Mailbox");
+
+	    if ($hdr = imap_check($mailbox))
+	    {
+	        $msgCount = $hdr->Nmsgs;
+	        $overview = imap_fetch_overview($mailbox,"1:$msgCount",0);
+	        $size=sizeof($overview);
+
+	        for($i=$size-1; $i>=0; $i--)
+	        {
+	            $val = $overview[$i];
+	            $sequence = $val->msgno;
+	            $from = $val->from;
+
+	            preg_match('/\b(captio\w+)\b/', $from, $match);
+	            if ($match)
+	            {
+	                $subject = $val->subject;
+	                $messageBody = imap_fetchbody($mailbox,$sequence,1);
+	                $success = parse_from_captio($subject, $messageBody, $_COOKIE["UserID"]);
+	                if ($success)
+	                {
+	                    // move to archived mailbox
+	                    imap_mail_move($mailbox, $sequence, '[Gmail]/All Mail');
+	                    imap_expunge($mailbox);
+	                    echo 'new mail, time to reload!';
+	                    continue;  // process the next message and don't add this one to the Messages box
+	                }
+	                else {
+	                    continue;
+	                }
+	            }
+	        }
+	    }
+
+	    imap_close($mailbox);
+	}
+
 /*
 	function song_exists($Title,$Artist)
 	{
