@@ -32,7 +32,7 @@ p, ul, ol {
 }
 
 ul {
-	list-style: none;
+	list-style-type: none;
 	margin-left: 0;
 	padding: 0;
 }
@@ -55,6 +55,8 @@ a:hover {
 
 .column {
 	width: 420px;
+	max-height: 420px;
+	overflow: auto;
 }
 
 .leftcol {
@@ -76,6 +78,7 @@ a:hover {
 	width: 940px;
 	height: 300px;
 	overflow: auto;
+	background:white;
 }
 
 .bottom:before {

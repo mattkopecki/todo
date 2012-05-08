@@ -86,6 +86,28 @@
 		}
 	}
 
+	function parse_from_captio($subject, $messageBody, $UserID)
+	{
+		preg_match('#\[(.*?)\]#', $subject, $match);
+		$listname = $match[1];
+
+		$checkListExists = mysql_query("SELECT Lists.ListID FROM Lists, Users WHERE Users.UserID='$UserID' AND Users.UserID=Lists.UserID AND Lists.Title='$listname';");
+
+		if(mysql_num_rows($checkListExists) > 0)	// List exists with that listname
+		{
+			$array = mysql_fetch_assoc($checkListExists);
+			$ListID = $array["ListID"];
+
+			mysql_query("INSERT INTO Tasks(ListID,Title) VALUES ('$ListID','$messageBody');");
+
+			return true;
+		}
+		else {
+			// List does not exist with that name
+			return false;
+		}
+	}
+
 /*
 	function song_exists($Title,$Artist)
 	{

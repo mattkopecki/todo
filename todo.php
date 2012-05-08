@@ -1,5 +1,37 @@
 <?php
 	require 'sql_lib.php';
+
+    ini_set('display_errors', 'On');
+    error_reporting(E_ALL | E_STRICT);
+
+    if (isset($_POST["userid"]) and isset($_POST["password"]))
+    {
+        $result = logon_user($_POST["userid"], $_POST["password"]);
+        $logged_in = FALSE;
+        if($result)
+        {
+            $logged_in = TRUE;
+            $UserID = $result["UserID"];
+            $UserName = $result["UserName"];
+            $email = $result["email"];
+            setcookie("UserID", $UserID);
+            header('Location: todo.php');
+        }
+        else
+        {
+            header('Location: login.php?success=no');
+        }
+    }
+    else if($_COOKIE["UserID"])
+    {
+        $logged_in = TRUE;
+        $UserID = $_COOKIE["UserID"];
+    }
+    else
+    {
+        $UserID = false;
+        header('Location: login.php');
+    }
 ?>
 
 
@@ -35,49 +67,46 @@ $(document).ready(function(){
 <script language="javascript">
 
 function addRow(listID) {
-    /*
-    var table = document.getElementById(listID);
-
-    var rowCount = table.rows.length;
-    var row = table.insertRow(rowCount);
-
-    var cell1 = row.insertCell(0);
-*/
-
     var list = document.getElementById(listID);
     var newLI = document.createElement("li");
 
-    newLI.appendChild(document.createTextNode("this is a test"));
+    var element = document.createElement("input");
+    element.type = "text";
+    element.size = "80";
+    element.name = "task[]";
+    newLI.appendChild(element);
 
-    list.insertBefore(newLI, list.firstChild);
-
-/*
-    var element1 = document.createElement("input");
-    element1.type = "text";
-    element1.size = "80";
-    element1.name = "task[]";
-    //element1.onblur= "saveTask('.$TaskID.','.$ListID.',this.value);"
-    //element1.onkeypress="enterKeyPress(event,'.$ListID.');"
-    cell1.appendChild(element1);
-    element1.focus();
+    /*
+    var newHtml = '<div style="white-space:nowrap;">
+                    <input type="text" name="task[]" id="-1" value="" size="60" onkeypress="enterKeyPress(event,'+listID+');" onblur="saveTask(-1,'+listID+',this.value);">
+                    <input type="button" id="delete'+listID+'t-1" value="X" onclick="deleteRow(\'list'+listID+'\', \'delete'+listID+'t-1\')" style="display:block; float:right;"/>
+                </div>'
+    newLI.innerHTML(newHtml);
     */
+
+    list.insertBefore(newLI, list.lastChild.nextSibling);
+    element.focus();
 }
 
-function deleteRow(tableID,itemID) {
+function deleteRow(listID,itemID) {
   try {
-    var table = document.getElementById(tableID);
+    var list = document.getElementById(listID);
     var item = document.getElementById(itemID);
-    var rowCount = table.rows.length;
+    var firstRow = list.firstChild;
 
-    for(var i=0; i<rowCount; i++) {
-        var row = table.rows[i];
-        var buttonID = row.cells[1].childNodes[0].id;
-        if(buttonID == itemID) {
-            table.deleteRow(i);
-            rowCount--;
-            i--;
+    function shouldDelete(listID, itemID, row) {
+        if (row == document.getElementById(listID).lastChild.nextSibling)
+        {}
+        else if (row.childNodes[2].id == itemID){
+            row.parentNode.removeChild(row);
+        }
+        else {
+            shouldDelete(listID, itemID, row.nextSibling);
         }
     }
+
+    shouldDelete(listID, itemID, firstRow);
+
   }
   catch(e) {
     alert(e);
@@ -95,7 +124,6 @@ function enterKeyPress(e,id) {
 }
 
 function saveTask(itemId,listId,textValue) {
-        //alert("here we go...task:"+itemId+" list:"+listId+" text:"+textValue)
         var mygetrequest=new XMLHttpRequest()
         mygetrequest.onreadystatechange=function(){
             if (mygetrequest.readyState==4){
@@ -222,7 +250,7 @@ function saveTask(itemId,listId,textValue) {
     $Username = "mattkopecki@gmail.com";
     $Password = "Iceman282";
 
-    $mailbox = imap_open($ServerName, $Username,$Password) or die("Could not open Mailbox");
+    $mailbox = imap_open($ServerName, $Username, $Password) or die("Could not open Mailbox");
 
     if ($hdr = imap_check($mailbox))
     {
@@ -236,7 +264,6 @@ function saveTask(itemId,listId,textValue) {
     $overview = imap_fetch_overview($mailbox,"1:$msgCount",0);
     $size=sizeof($overview);
 
-    //echo '<table border="0" cellspacing="0" width="100%">';
     echo '<dl>';
 
     for($i=$size-1; $i>=0; $i--)
@@ -248,25 +275,43 @@ function saveTask(itemId,listId,textValue) {
         $subject = $val->subject;
     	$seen = $val->seen;
 
-        $from = ereg_replace("\"","",$from);
+        $from = preg_replace("/\"/","",$from);
 
-    	list($dayName,$day,$month,$year,$time) = split(" ",$date);
+    	list($dayName,$day,$month,$year,$time) = preg_split("/ /",$date);
         $time = substr($time,0,5);
     	$date = $month ." ". $day .", ". $year . " ". $time;
 
+        preg_match('/\b(capt\w+)\b/', $from, $match);
+        if ($match)
+        {
+            $messageBody = imap_fetchbody($mailbox,$sequence,1);
+            $success = parse_from_captio($subject, $messageBody, $_COOKIE["UserID"]);
+            if ($success)
+            {
+                // move to archived mailbox
+                //$mbox = imap_open('{imap.gmail.com:993/imap/ssl}[Gmail]/All Mail', $Username, $Password) or die("Could not open All Mail");
+                imap_mail_move($mailbox, $sequence, '[Gmail]/All Mail');
+                imap_expunge($mailbox);
+                // might need to be break 2; or break 3; or maybe continue;
+                continue;  // process the next message and don't add this one to the Messages box
+            }
+            else {
+                continue;
+            }
+        }
 
-    if (strlen($subject) > 60)
-    {
-    	$subject = substr($subject,0,59) ."...";
-    }
+        if (strlen($subject) > 60)
+        {
+        	$subject = substr($subject,0,59) ."...";
+        }
 
-    //$body = imap_fetchbody($mailbox,$sequence,1);	// this is slow. I need some way to only get the body on demand.
-    $body = 'this text makes up the body of the message';
+        //$body = imap_fetchbody($mailbox,$sequence,1);	// this is slow. I need some way to only get the body on demand
+        $body = 'this text makes up the body of the message';
 
-    if (strlen($body) > 60)
-    {
-    	$body = substr($body,0,59) ."...";
-    }
+        if (strlen($body) > 60)
+        {
+        	$body = substr($body,0,59) ."...";
+        }
 
     	echo '<dt>
                 <div style="white-space:nowrap; display:block;">
@@ -278,7 +323,6 @@ function saveTask(itemId,listId,textValue) {
             <dd>'.$body.'</dd>';
     }
 
-    //echo "</table>";
     echo '</dl>';
 
     imap_close($mailbox);
