@@ -232,7 +232,7 @@ function saveTask(itemId,listId,textValue) {
 
     $ServerName = "{imap.gmail.com:993/imap/ssl}INBOX";
     $Username = "mattkopecki@gmail.com";
-    $Password = "Iceman282";
+    $Password = "MPK282kop";
 
     $mailbox = imap_open($ServerName, $Username, $Password) or die("Could not open Mailbox");
 
