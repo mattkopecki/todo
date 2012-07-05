@@ -43,89 +43,15 @@
 <meta name="description" content="" />
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <title>To Do</title>
-<link href='http://fonts.googleapis.com/css?family=proxima-nova' rel='stylesheet' type='text/css'>
-<link href="style.css" rel="stylesheet" type="text/css" media="screen" />
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-<script>
-$(document).ready(function(){
-    $('input').keyup(function(e){
-        if(e.which==40)      // 40 is down arrow
-            $(this).closest('li').next().find('input').focus();
-        else if(e.which==38) // 38 is up arrow
-            $(this).closest('li').prev().find('input').focus();
-    });
-});
-
-</script>
-<script language="javascript">
-
-function addRow(listID) {
-    var list = document.getElementById(listID);
-    var newLI = document.createElement("li");
-
-    var element = document.createElement("input");
-    element.type = "text";
-    element.size = "80";
-    element.name = "task[]";
-
-    newLI.appendChild(element);
-    list.insertBefore(newLI, list.lastChild.nextSibling);
-    element.focus();
-}
-
-function deleteRow(listID,itemID) {
-  try {
-    var list = document.getElementById(listID);
-    var item = document.getElementById(itemID);
-    var firstRow = list.firstChild;
-
-    function shouldDelete(listID, itemID, row) {
-        if (row == document.getElementById(listID).lastChild.nextSibling)
-        {}
-        else if (row.childNodes[2].id == itemID){
-            row.parentNode.removeChild(row);
-        }
-        else {
-            shouldDelete(listID, itemID, row.nextSibling);
-        }
-    }
-
-    shouldDelete(listID, itemID, firstRow);
-  }
-  catch(e) {
-    alert(e);
-  }
-}
-
-function enterKeyPress(e,id) {
-    // look for window.event in case event isn't passed in
-    if (typeof e == 'undefined' && window.event) {
-        e = window.event;
-    }
-    if (e.keyCode == 13) {
-        document.getElementById('add'+id).click();
-    }
-}
-
-function saveTask(itemId,listId,textValue) {
-        var mygetrequest=new XMLHttpRequest()
-        mygetrequest.onreadystatechange=function(){
-            if (mygetrequest.readyState==4){
-                if (mygetrequest.status==200 || window.location.href.indexOf("http")==-1){
-                }
-                else{
-                    alert("An error has occured making the request")
-                }
-            }
-        }
-        var taskvalue=encodeURIComponent(itemId)
-        var listvalue=encodeURIComponent(listId)
-        var textvalue=encodeURIComponent(textValue)
-        mygetrequest.open("GET", "additem.php?taskid="+taskvalue+"&listid="+listvalue+"&text="+textvalue, true)
-        mygetrequest.send(null)
-}
-</script>
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans:400,800">
+<link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+<script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js" type="text/javascript"></script>
+<script src="http://jquery-ui.googlecode.com/svn/tags/latest/external/jquery.bgiframe-2.1.2.js" type="text/javascript"></script>
+<script src="http://jquery-ui.googlecode.com/svn/tags/latest/ui/minified/i18n/jquery-ui-i18n.min.js" type="text/javascript"></script>
+<script src="listactions.js" type="text/javascript"></script>
 </head>
+
 <body>
 <div id="wrapper">
 
@@ -134,20 +60,21 @@ function saveTask(itemId,listId,textValue) {
 			<li><a href="index.php">Homepage</a></li>
 			<li class="current_page_item"><a href="todo.php">To Do</a></li>
 			<li><a href="tools.php">Tools</a></li>
-			<ri><a href="logout.php">Log Out</a></ri>
+			<ri>
+                <a href="action.php">Gmail Login</a>
+                <a href="logout.php">Log Out</a>
+            </ri>
 		</ul>
-	</div>
-	<!-- end #menu -->
+	</div> <!-- end #menu -->
 
 <div id="page">
+
+<div id="resp"></div> <!-- this is where the response from the list rearrangement updates will show up -->
 
 <div class="column leftcol">
 <?php
 	$results = my_lists($_COOKIE["UserID"]);
-	if (count($results) == 0)
-	{
-		echo "<p>You have no Lists.</p>";
-	}
+	if (count($results) == 0) { echo "<p>You have no Lists.</p>"; }
 	else
 	{
 	    foreach($results as $list)
@@ -160,7 +87,7 @@ function saveTask(itemId,listId,textValue) {
 
 		echo '<form action="todo.php" method="POST">';
 		echo '<div id="list'.$ListID.'" align="left"  border="0" style="clear:both">';
-        echo '<ul>';
+        echo '<ul id="sortable1" class="connectedSortable">';
 
 		foreach ($contents as $task)
 		{
@@ -169,7 +96,7 @@ function saveTask(itemId,listId,textValue) {
 
 			echo '<li align="left">
                 <div style="white-space:nowrap;">
-                    <input type="text" name="task[]" id="'.$TaskID.'" value="'.$Title.'" size="60" onkeypress="enterKeyPress(event,'.$ListID.');" onblur="saveTask('.$TaskID.','.$ListID.',this.value);">
+                    <input type="text" name="task[]" id="TaskID_'.$TaskID.'" value="'.$Title.'" size="60" onkeypress="enterKeyPress(event,'.$ListID.');" onblur="saveTask('.$TaskID.','.$ListID.',this.value);">
                     <input type="button" id="delete'.$ListID.'t'.$TaskID.'" value="X" onclick="deleteRow(\'list'.$ListID.'\', \'delete'.$ListID.'t'.$TaskID.'\')" style="display:block; float:right;"/>
                 </div>
                 </li>';
@@ -178,21 +105,17 @@ function saveTask(itemId,listId,textValue) {
         echo '</ul>';
 		echo '</div>';
 		echo '</form>';
-		echo '<input type="button" id="add'.$ListID.'" value="Add Row" onclick="addRow(\'list'.$ListID.'\')" style="visibility:hidden"/>  </div>';
+		echo '<input type="button" id="add'.$ListID.'" value="Add Row" onclick="addRow(\'list'.$ListID.'\')" />  </div>';
 	    }
 	}
 ?>
-</div>
-<!-- end leftcol -->
+</div>  <!-- end leftcol -->
 
 <div class="column rightcol">
 <h1>TO DO LIST</h1>
 <?php
 	$results = my_todo_list($_COOKIE["UserID"]);
-	if (count($results) == 0)
-	{
-		echo "<p>You have no Lists.</p>";
-	}
+	if (count($results) == 0) { echo "<p>You have no Lists.</p>"; }
 	else
 	{
 	    foreach($results as $list)
@@ -203,7 +126,7 @@ function saveTask(itemId,listId,textValue) {
 	    	$contents = list_contents($ListID);
 
 		echo '<form action="todo.php" method="POST">';
-		echo '<div id="list'.$ListID.'" align="left" border="0"><ul>';
+		echo '<div id="list'.$ListID.'" align="left" border="0"><ul id="sortable2" class="connectedSortable">';
 
 		foreach ($contents as $task)
 		{
@@ -224,22 +147,22 @@ function saveTask(itemId,listId,textValue) {
 	    }
 	}
 ?>
-</div>
-<!-- end rightcol -->
+</div>  <!-- end rightcol -->
 
 <div class="bottom">
 <?php
-
     $ServerName = "{imap.gmail.com:993/imap/ssl}INBOX";
     $Username = "mattkopecki@gmail.com";
-    $Password = "MPK282kop";
+    $Password = "ymadqdjghxeakbhq";
 
     $mailbox = imap_open($ServerName, $Username, $Password) or die("Could not open Mailbox");
 
     if ($hdr = imap_check($mailbox))
     {
-        echo "<h1>" . $hdr->Nmsgs . " MESSAGES</h1>\n\n<br>";
-    	$msgCount = $hdr->Nmsgs;
+        $msgCount = $hdr->Nmsgs;
+        if ($msgCount == 0) { echo "<h1> INBOX ZERO </h1>\n\n<br>"; }
+        else if ($msgCount == 1) { echo "<h1>1 MESSAGE</h1>\n\n<br>"; }
+        else { echo "<h1>" . $hdr->Nmsgs . " MESSAGES</h1>\n\n<br>"; }
     }
     else
     {
@@ -248,7 +171,7 @@ function saveTask(itemId,listId,textValue) {
     $overview = imap_fetch_overview($mailbox,"1:$msgCount",0);
     $size=sizeof($overview);
 
-    echo '<dl>';
+    echo '<dl id="sortable2" class="connectedSortable">';
 
     for($i=$size-1; $i>=0; $i--)
     {
@@ -256,15 +179,14 @@ function saveTask(itemId,listId,textValue) {
         $sequence = $val->msgno;
     	$from = $val->from;
     	$date = $val->date;
-        $subject = $val->subject;
     	$seen = $val->seen;
+        if ($val->subject) {$subject = $val->subject;} else $subject = "(no subject)";
 
         $from = preg_replace("/\"/","",$from);
 
     	list($dayName,$day,$month,$year,$time) = preg_split("/ /",$date);
         $time = substr($time,0,5);
         $date = $year."-".$month."-".$day;
-
 
         // convert the date display to a more natural format
         if (date('Y-m-d') == date('Y-m-d', strtotime((string)$date)))
@@ -309,14 +231,15 @@ function saveTask(itemId,listId,textValue) {
         }
 
         //$body = imap_fetchbody($mailbox,$sequence,1);	// this is slow. I need some way to only get the body on demand
-        $body = 'this text makes up the body of the message';
+        $body = 'this text is a placeholder for the body of the message';
 
         if (strlen($body) > 60)
         {
         	$body = substr($body,0,59) ."...";
         }
 
-    	echo '<dt>
+    	echo '<div>
+            <dt>
                 <div style="white-space:nowrap; display:block;">
                 <span class="from">'.$from.'</span>
                 <span class="maildate">'.$date.'</span>
@@ -325,21 +248,19 @@ function saveTask(itemId,listId,textValue) {
             <dd>
                 <div class="subject">'.$subject.'</div>
                 <div class="mailbody">'.$body.'</div>
-            </dd>';
+            </dd>
+            </div>';
     }
 
     echo '</dl>';
 
     imap_close($mailbox);
 ?>
-</div>
-<!-- end bottom -->
+</div>  <!-- end bottom -->
 
-</div>
-<!-- end #page -->
+</div>  <!-- end #page -->
 
-</div>
-<!-- end #wrapper -->
+</div>  <!-- end #wrapper -->
 
 </body>
 </html>

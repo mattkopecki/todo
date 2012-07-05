@@ -112,7 +112,7 @@
 	{
 	    $ServerName = "{imap.gmail.com:993/imap/ssl}INBOX";
 	    $Username = "mattkopecki@gmail.com";
-	    $Password = "MPK282kop";
+	    $Password = "ymadqdjghxeakbhq";
 
 	    $mailbox = imap_open($ServerName, $Username, $Password) or die("Could not open Mailbox");
 
@@ -139,7 +139,6 @@
 	                    // move to archived mailbox
 	                    imap_mail_move($mailbox, $sequence, '[Gmail]/All Mail');
 	                    imap_expunge($mailbox);
-	                    echo 'new mail, time to reload!';
 	                    continue;  // process the next message and don't add this one to the Messages box
 	                }
 	                else {

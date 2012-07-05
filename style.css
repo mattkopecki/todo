@@ -2,7 +2,7 @@ body {
 	margin: 0;
 	padding: 0;
 	background: white;
-	font-family: 'proxima-nova', Helvetica, Arial, sans-serif;
+	font-family: 'Open Sans', sans-serif;
 	font-size: 14px;
 }
 
@@ -42,15 +42,16 @@ li {
 }
 
 li:hover {
-	background-color: yellow;
+	background-color: #FFFF66;
 }
 
 dt {
 	font-size: 14px;
+	font-weight: 400;
 }
 
 dd {
-
+	font-weight: 400;
 }
 
 .from {
@@ -66,7 +67,7 @@ dd {
 .maildate {
 	font-size: 12px;
 	float: right;
-	color: blue;
+	color: #3399FF;
 }
 
 .mailbody {
@@ -83,7 +84,7 @@ a:hover {
 
 .column {
 	width: 420px;
-	max-height: 420px;
+	height: 45%;
 	overflow: auto;
 }
 
@@ -100,21 +101,21 @@ a:hover {
 
 .bottom {
 	position:absolute;
-	bottom:30px;
+	bottom:5%;
 	border:8px solid black;
 	padding:20px;
-	width: 940px;
-	height: 300px;
+	width: 930px;
+	height: 25%;
 	overflow: auto;
 	background:white;
 }
 
 .bottom:before {
     content:'';
-    position:fixed;
-    bottom: 358px;
+    position:relative;
+    bottom: 2px;
     height: 20px;
-    width: 940px;
+    width: 950px;
     background:linear-gradient(top, white, transparent); /* standard CSS3 */
     background:-o-linear-gradient(top, white, transparent); /* Opera */
     background:-moz-linear-gradient(top, white, rgba(255, 255, 255, 0)); /* Firefox */
@@ -127,9 +128,9 @@ a:hover {
 .bottom:after {
 	content:'';
 	position:fixed;
-	bottom: 38px;
+	bottom: 6%;
 	height: 20px;
-	width: 940px;
+	width: 950px;
 	background: linear-gradient(bottom, white, transparent);
 	background:-o-linear-gradient(bottom, white, transparent);
 	background:-ms-linear-gradient(bottom, white, transparent);
@@ -144,6 +145,8 @@ input[type="text"] {
     border: none;
     height: 3em;
     border-bottom: thin solid #C0C0C0;
+   	font-weight: 400;
+   	font-family: 'Open Sans';
 }
 
 input:focus {
