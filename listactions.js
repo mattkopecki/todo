@@ -1,53 +1,18 @@
 
-
 function addRow(listID) {
-    var list = document.getElementById(listID);
-    var newLI = document.createElement("li");
-
-    var element = document.createElement("input");
-    element.type = "text";
-    element.size = "80";
-    element.name = "task[]";
-
-    newLI.appendChild(element);
-    list.insertBefore(newLI, list.lastChild.nextSibling);
-    element.focus();
+    var list = listID;
+    $.post("add.php", {ListID: list}, function(){window.location.reload();});
 }
 
-
-// this function doesnt work yet
 function deleteRow(listID,itemID) {
-  try {
-    var list = document.getElementById(listID);
-    var item = document.getElementById(itemID);
-    var firstRow = list.firstChild;
-
-    function shouldDelete(listID, itemID, row) {
-        if (row == document.getElementById(listID).lastChild.nextSibling)
-        {}
-        else if (row.childNodes[2].id == itemID){
-            row.parentNode.removeChild(row);
-        }
-        else {
-            shouldDelete(listID, itemID, row.nextSibling);
-        }
-    }
-
-    shouldDelete(listID, itemID, firstRow);
-  }
-  catch(e) {
-    alert(e);
-  }
+    var list = listID;
+    var item = itemID;
+    $.post("delete.php", {ListID: list, TaskID: itemID}, function(){window.location.reload();});
 }
 
-function enterKeyPress(e,id) {
-    // look for window.event in case event isn't passed in
-    if (typeof e == 'undefined' && window.event) {
-        e = window.event;
-    }
-    if (e.keyCode == 13) {
-        document.getElementById('add'+id).click();
-    }
+function archive(taskID) {
+    var task = taskID;
+    $.post("archive.php", {TaskID: task}, function(){window.location.reload();});
 }
 
 function saveTask(itemId,listId,textValue) {
@@ -68,6 +33,15 @@ function saveTask(itemId,listId,textValue) {
         mygetrequest.send(null);
 }
 
+function enterKeyPress(e,id) {
+    // look for window.event in case event isn't passed in
+    if (typeof e == 'undefined' && window.event) {
+        e = window.event;
+    }
+    if (e.keyCode == 13) {
+        document.getElementById('add'+id).click();
+    }
+}
 
 $(function() {
     $('input').keyup(function(e){
@@ -90,32 +64,3 @@ $(function() {
         }
     }).disableSelection();
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

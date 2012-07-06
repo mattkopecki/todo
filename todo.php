@@ -59,7 +59,7 @@
 		<ul>
 			<li><a href="index.php">Homepage</a></li>
 			<li class="current_page_item"><a href="todo.php">To Do</a></li>
-			<li><a href="tools.php">Tools</a></li>
+			<li><a href="tools.php">Archived</a></li>
 			<ri>
                 <a href="action.php">Gmail Login</a>
                 <a href="logout.php">Log Out</a>
@@ -96,8 +96,9 @@
 
 			echo '<li align="left">
                 <div style="white-space:nowrap;">
-                    <input type="text" name="task[]" id="TaskID_'.$TaskID.'" value="'.$Title.'" size="60" onkeypress="enterKeyPress(event,'.$ListID.');" onblur="saveTask('.$TaskID.','.$ListID.',this.value);">
-                    <input type="button" id="delete'.$ListID.'t'.$TaskID.'" value="X" onclick="deleteRow(\'list'.$ListID.'\', \'delete'.$ListID.'t'.$TaskID.'\')" style="display:block; float:right;"/>
+                    <input type="button" id="archive'.$TaskID.'" value="O" onclick="archive(\''.$TaskID.'\')" style="display:block; float:left;"/>
+                    <input class="grey" type="text" name="task[]" id="'.$TaskID.'" value="'.$Title.'" size="45" onkeypress="enterKeyPress(event,'.$ListID.');" onblur="saveTask('.$TaskID.','.$ListID.',this.value);">
+                    <input type="button" id="delete'.$TaskID.'" value="X" onclick="deleteRow(\'list'.$ListID.'\', \'t'.$TaskID.'\')" style="display:block; float:right;"/>
                 </div>
                 </li>';
 
@@ -105,7 +106,7 @@
         echo '</ul>';
 		echo '</div>';
 		echo '</form>';
-		echo '<input type="button" id="add'.$ListID.'" value="Add Row" onclick="addRow(\'list'.$ListID.'\')" />  </div>';
+		echo '<input type="button" id="add'.$ListID.'" value="Add Row" onclick="addRow(\'list'.$ListID.'\')"/>  </div>';
 	    }
 	}
 ?>
@@ -135,15 +136,16 @@
 
 			echo '<li align="left">
                 <div style="white-space:nowrap;">
-                    <input type="text" name="task[]" id="'.$TaskID.'" value="'.$Title.'" size="60" onkeypress="enterKeyPress(event,'.$ListID.');" onblur="saveTask('.$TaskID.','.$ListID.',this.value);">
-                    <input type="button" id="delete'.$ListID.'t'.$TaskID.'" value="X" onclick="deleteRow(\'list'.$ListID.'\', \'delete'.$ListID.'t'.$TaskID.'\')" style="display:block; float:right;"/>
+                    <input type="button" id="archive'.$TaskID.'" value="O" onclick="archive(\''.$TaskID.'\')" style="display:block; float:left;"/>
+                    <input type="text" name="task[]" id="'.$TaskID.'" value="'.$Title.'" size="45" onkeypress="enterKeyPress(event,'.$ListID.');" onblur="saveTask('.$TaskID.','.$ListID.',this.value);">
+                    <input type="button" id="delete'.$TaskID.'" value="X" onclick="deleteRow(\'list'.$ListID.'\', \'t'.$TaskID.'\')" style="display:block; float:right;"/>
                 </div>
                 </li>';
 
         }
         echo '</ul></div>';
         echo '</form>';
-        echo '<input type="button" id="add'.$ListID.'" value="Add Row" onclick="addRow(\'list'.$ListID.'\')" style="visibility:hidden"/>';
+        echo '<input type="button" id="add'.$ListID.'" value="Add Row" onclick="addRow(\'list'.$ListID.'\')"/>';
 	    }
 	}
 ?>
@@ -160,9 +162,9 @@
     if ($hdr = imap_check($mailbox))
     {
         $msgCount = $hdr->Nmsgs;
-        if ($msgCount == 0) { echo "<h1> INBOX ZERO </h1>\n\n<br>"; }
-        else if ($msgCount == 1) { echo "<h1>1 MESSAGE</h1>\n\n<br>"; }
-        else { echo "<h1>" . $hdr->Nmsgs . " MESSAGES</h1>\n\n<br>"; }
+        if ($msgCount == 0) { echo "<h1> INBOX ZERO </h1>"; }
+        else if ($msgCount == 1) { echo "<h1>1 MESSAGE</h1>"; }
+        else { echo "<h1>" . $hdr->Nmsgs . " MESSAGES</h1>"; }
     }
     else
     {

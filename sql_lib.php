@@ -33,12 +33,18 @@
 
 	function my_lists($id)
 	{
-		$result = mysql_query("SELECT * FROM Lists,Users WHERE Users.UserID='$id' AND Users.UserID=Lists.UserID AND NOT Lists.Title='To Do List';");
+		$result = mysql_query("SELECT * FROM Lists,Users WHERE Users.UserID='$id' AND Users.UserID=Lists.UserID AND NOT Lists.Title='To Do List' AND NOT Lists.Title='Archived';");
 		$retval = array();
 		while($row = mysql_fetch_array($result)){
 			array_push($retval, $row);
 		}
 		return $retval;
+	}
+
+	function my_archives($id)
+	{
+		$result = mysql_query("SELECT * FROM Lists WHERE UserID='$id' AND Title='Archived';");
+		return mysql_fetch_array($result);
 	}
 
 	function my_todo_list($id)

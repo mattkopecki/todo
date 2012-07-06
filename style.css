@@ -26,6 +26,12 @@ h3 {
 	font-size: 1.6em;
 }
 
+h4 {
+	font-size: 1.0em;
+	font-weight: normal;
+	color: #00bc5e;
+}
+
 p, ul, ol {
 	margin-top: 0;
 	line-height: 180%;
@@ -42,12 +48,16 @@ li {
 }
 
 li:hover {
-	background-color: #FFFF66;
+	/*background-color: #FFFF66;*/
 }
 
 dt {
 	font-size: 14px;
 	font-weight: 400;
+}
+
+dt:hover {
+	/*background-color: #FFFF66;*/
 }
 
 dd {
@@ -83,7 +93,7 @@ a:hover {
 }
 
 .column {
-	width: 420px;
+	width: 450px;
 	height: 45%;
 	overflow: auto;
 }
@@ -96,16 +106,17 @@ a:hover {
 .rightcol {
 	float: right;
 	border: 8px solid black;
-	padding: 20px;
+	padding: 0 20px;
 }
 
 .bottom {
 	position:absolute;
 	bottom:5%;
 	border:8px solid black;
-	padding:20px;
+	padding: 0 20px;
 	width: 930px;
-	height: 25%;
+	min-height: 50px;
+	max-height: 30%;
 	overflow: auto;
 	background:white;
 }
@@ -115,7 +126,7 @@ a:hover {
     position:relative;
     bottom: 2px;
     height: 20px;
-    width: 950px;
+    width: 930px;
     background:linear-gradient(top, white, transparent); /* standard CSS3 */
     background:-o-linear-gradient(top, white, transparent); /* Opera */
     background:-moz-linear-gradient(top, white, rgba(255, 255, 255, 0)); /* Firefox */
@@ -130,7 +141,7 @@ a:hover {
 	position:fixed;
 	bottom: 6%;
 	height: 20px;
-	width: 950px;
+	width: 930px;
 	background: linear-gradient(bottom, white, transparent);
 	background:-o-linear-gradient(bottom, white, transparent);
 	background:-ms-linear-gradient(bottom, white, transparent);
@@ -140,13 +151,24 @@ a:hover {
 	z-index: 999;
 }
 
+input[type="button"] {
+	background: transparent;
+	border:1px solid;
+	border-color: #C0C0C0;
+}
+
 input[type="text"] {
     background: transparent;
     border: none;
     height: 3em;
     border-bottom: thin solid #C0C0C0;
-   	font-weight: 400;
+   	font-weight: 900;
+	font-size: 14px;
    	font-family: 'Open Sans';
+}
+
+input.grey {
+	color: #C0C0C0;
 }
 
 input:focus {
@@ -230,38 +252,10 @@ input:focus {
 	padding: 0;
 }
 
-#page-bgtop {
-}
-
-#page-bgbtm {
-	margin: 0;
-	padding: 40px 30px 0 30px;
-}
-
 /* Content */
 
 #content {
 	float: right;
 	width: 600px;
 	padding: 0 0;
-}
-
-/* Footer */
-
-#footer {
-	width: 960px;
-	height: 55px;
-	margin: 0 auto 40px auto;
-	border-top: 1px solid #B6BFD0;
-	font-family: Arial, Helvetica, sans-serif;
-}
-
-#footer p {
-	margin: 0;
-	padding-top: 18px;
-	line-height: normal;
-	text-align: center;
-}
-
-#footer a {
 }

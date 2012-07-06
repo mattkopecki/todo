@@ -1,72 +1,96 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<!--
-Design by Free CSS Templates
-http://www.freecsstemplates.org
-Released for free under a Creative Commons Attribution 2.5 License
+<?php
+	require 'sql_lib.php';
 
-Name       : GradientBlack
-Description: A two-column, fixed-width design with dark color scheme.
-Version    : 1.0
-Released   : 20111121
+    ini_set('display_errors', 'On');
+    error_reporting(E_ALL | E_STRICT);
 
--->
+    if (isset($_POST["userid"]) and isset($_POST["password"]))
+    {
+        $result = logon_user($_POST["userid"], $_POST["password"]);
+        $logged_in = FALSE;
+        if($result)
+        {
+            $logged_in = TRUE;
+            $UserID = $result["UserID"];
+            $UserName = $result["UserName"];
+            $email = $result["email"];
+            setcookie("UserID", $UserID);
+            header('Location: todo.php');
+        }
+        else
+        {
+            header('Location: login.php?success=no');
+        }
+    }
+    else if($_COOKIE["UserID"])
+    {
+        $logged_in = TRUE;
+        $UserID = $_COOKIE["UserID"];
+    }
+    else
+    {
+        $UserID = false;
+        header('Location: login.php');
+    }
+
+    check_for_captio();
+?>
+
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta name="keywords" content="" />
 <meta name="description" content="" />
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title>PlayReq</title>
-<link href='http://fonts.googleapis.com/css?family=Arvo' rel='stylesheet' type='text/css'>
-<link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+<title>To Do</title>
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans:400,800">
+<link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+<script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js" type="text/javascript"></script>
+<script src="http://jquery-ui.googlecode.com/svn/tags/latest/external/jquery.bgiframe-2.1.2.js" type="text/javascript"></script>
+<script src="http://jquery-ui.googlecode.com/svn/tags/latest/ui/minified/i18n/jquery-ui-i18n.min.js" type="text/javascript"></script>
+<script src="listactions.js" type="text/javascript"></script>
 </head>
+
 <body>
 <div id="wrapper">
-	<div id="header-wrapper">
-		<div id="header">
-			<div id="logo">
-				<h1>PlayReq</h1>
-				<p>Social Playlisting<a href="http://www.freecsstemplates.org/"></a></p>
-			</div>
-		</div>
-	</div>
-	<!-- end #header -->
+
 	<div id="menu">
 		<ul>
 			<li><a href="index.php">Homepage</a></li>
-			<li><a href="library.php">Library</a></li>
-			<li><a href="playlists.php">Playlists</a></li>
-			<li><a href="events.php">Events</a></li>
-			<li class="current_page_item"><a href="tools.php">Tools</a></li>
-			<ri><a href="logout.php">Log&nbsp;&nbsp;Out</a></ri>
+			<li><a href="todo.php">To Do</a></li>
+			<li class="current_page_item"><a href="tools.php">Archived</a></li>
+			<ri>
+                <a href="action.php">Gmail Login</a>
+                <a href="logout.php">Log Out</a>
+            </ri>
 		</ul>
-	</div>
-	<!-- end #menu -->
+	</div> <!-- end #menu -->
+
 	<div id="page">
-		<div id="page-bgtop">
-			<div align="center" id="page-bgbtm">
-				<div align="center">
-					<div align="center" class="post">
-						<h2 class="title" align="center"><font  color="black"><a href="PlayReqHost.app.zip">Download PlayReqHost</a></font></h2>
-						<h2 class="title" align="center"><font color="black"><a href="PlayReqImport.app.zip">Download PlayReqImport</a></font></h2>
-						<?php
-						echo '<h3 class="title"><font color="black">Your User ID is ';
-						echo $_COOKIE["PlayReq"];
-						echo '</font></h3>';
-						?>
-					</div>
-				</div>
-				<!-- end #content -->
-				<div id="sidebar">
-				</div>
-				<!-- end #sidebar -->
-				<div style="clear: both;">&nbsp;</div>
-			</div>
-		</div>
-	</div>
-</div>
-<div id="footer">
-	<p>Copyright (c) 2012 PlayReq Inc.. All rights reserved.</p>
-</div>
-<!-- end #footer -->
+
+<?php
+	$result = my_archives($_COOKIE["UserID"]);
+	$ListID = $result["ListID"];
+
+    echo '<h1>Archived</h1>';
+
+	echo '<ul>';
+
+   	$contents = list_contents($ListID);
+	foreach ($contents as $task)
+	{
+		$Title = $task["Title"];
+		echo '<li align="left"><h4>'.$Title.'</h4></li>';
+	}
+
+    echo '</ul>';
+?>
+
+
+	</div>  <!-- end #page -->
+
+</div>  <!-- end #wrapper -->
+
 </body>
 </html>
