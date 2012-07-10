@@ -55,16 +55,8 @@
 <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
 <body>
-<div id="wrapper">
-	<div id="header-wrapper">
-		<div id="header">
-			<div id="logo">
-				<h1>To Do</h1>
-				<p>My To Do List</p>
-			</div>
-		</div>
-	</div>
-	<!-- end #header -->
+	<h1>To Do</h1>
+
 	<div id="menu">
 		<ul>
 			<li class="current_page_item"><a href="#">Homepage</a></li>
@@ -74,31 +66,16 @@
 			echo $logged_in ? "<li><a href=\"tools.php\">Tools</a></li>" : "";
 			?>
 
-			<?php if ($logged_in) {echo "<ri><a href=\"logout.php\">Log Out</a></ri>";} else {echo "<ri><a href=\"login.php\">Log&nbsp;&nbsp;In</a></ri>";} ?>
+			<?php if ($logged_in) {echo "<ri><a href=\"logout.php\">Log Out</a></ri>";} else {echo "<ri><a href=\"login.php\">Log In</a></ri>";} ?>
 		</ul>
-	</div>
-	<!-- end #menu -->
-	<div id="page">
-		<div id="page-bgtop">
-			<div id="page-bgbtm">
-				<div id="content">
-					<div class="post">
-						<h2 class="title"><font color="black">Welcome to your To Do List</font></h2>
-					</div>
-				</div>
-				<!-- end #content -->
-				<div id="sidebar">
-				</div>
-				<!-- end #sidebar -->
-				<div style="clear: both;">&nbsp;</div>
-			</div>
-		</div>
-	</div>
-	<!-- end #page -->
-</div>
+	</div><!-- end #menu -->
+<div id="content">
+
 <div id="footer">
 	<p>Copyright (c) 2012 Matt Kopecki. All rights reserved.</p>
-</div>
-<!-- end #footer -->
+</div> <!-- end #footer -->
+
+</div> <!-- end #content -->
+
 </body>
 </html>

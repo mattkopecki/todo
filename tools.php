@@ -38,16 +38,14 @@
 <div id="wrapper">
 
 	<div id="menu">
-        <a href="#" style="color:#C0C0C0;" onclick="javascript:showElement('left-menu')"><span>Menu</span></a>
+        <a href="#" style="color:#C0C0C0;" onclick="javascript:showElement('left-menu')"><span>&#x2759;&nbsp;&nbsp;Menu</span></a>
         <ul id="left-menu" class="left-menu" style="display:none;">
-			<li><a href="index.php">Homepage</a></li>
-			<li><a href="todo.php">To Do</a></li>
-			<li class="current_page_item"><a href="tools.php">Archived</a></li>
-			<ri>
-                <a href="action.php">Gmail Login</a>
-                <a href="logout.php">Log Out</a>
-            </ri>
-		</ul>
+            <li><a style="color:#C0C0C0" href="index.php">Homepage</a></li>
+            <li><a style="color:#C0C0C0" href="todo.php">To Do</a></li>
+            <li class="current_page_item"><a href="tools.php">Archived</a></li>
+            <li><a style="color:#C0C0C0" href="action.php">Gmail Login</a></li>
+            <li><a style="color:#C0C0C0" href="logout.php">Log Out</a></li>
+        </ul>
 	</div> <!-- end #menu -->
 
 	<div id="page">
@@ -60,11 +58,12 @@
 
 	echo '<ul>';
 
-   	$contents = list_contents($ListID);
+   	$contents = archives_contents($ListID);
 	foreach ($contents as $task)
 	{
 		$Title = $task["Title"];
-		echo '<li align="left"><h4>'.$Title.'</h4></li>';
+        $colorCode = $task["Order"];
+		echo '<li align="left"><h4 class="archiveColor_'.$colorCode.'">'.$Title.'</h4></li>';
 	}
 
     echo '</ul>';

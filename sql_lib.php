@@ -59,7 +59,17 @@
 
 	function list_contents($id)
 	{
-		$result = mysql_query("SELECT * FROM Tasks WHERE ListID =  '$id' ORDER BY  `Tasks`.`Order` ASC LIMIT 0 , 30;");
+		$result = mysql_query("SELECT * FROM Tasks WHERE ListID =  '$id' ORDER BY  `Tasks`.`Order` ASC;");
+		$retval = array();
+		while($row = mysql_fetch_array($result)){
+			array_push($retval, $row);
+		}
+		return $retval;
+	}
+
+	function archives_contents($id)
+	{
+		$result = mysql_query("SELECT * FROM Tasks WHERE ListID =  '$id' ORDER BY  `Tasks`.`Date` DESC;");
 		$retval = array();
 		while($row = mysql_fetch_array($result)){
 			array_push($retval, $row);
