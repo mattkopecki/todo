@@ -27,11 +27,13 @@
 <title>To Do</title>
 <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans:400,800">
 <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+<link rel='stylesheet' href='popbox.css' type='text/css'>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
 <script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js" type="text/javascript"></script>
 <script src="http://jquery-ui.googlecode.com/svn/tags/latest/external/jquery.bgiframe-2.1.2.js" type="text/javascript"></script>
 <script src="http://jquery-ui.googlecode.com/svn/tags/latest/ui/minified/i18n/jquery-ui-i18n.min.js" type="text/javascript"></script>
 <script src="listactions.js" type="text/javascript"></script>
+<script type='text/javascript' charset='utf-8' src='popbox.js'></script>
 </head>
 
 <body>
@@ -252,6 +254,63 @@
     imap_close($mailbox);
 ?>
 </div>  <!-- end bottom -->
+
+<!--
+<div class='popbox' style="visibility:hidden;">
+    <a class='open' href='#'>Click Here!</a>
+
+    <div class='collapse'>
+        <div class='box'>
+
+            <?php
+
+            //need to set the message number of the selected message
+            //$selectedLi = ;
+
+            $ServerName = "{imap.gmail.com:993/imap/ssl}INBOX";
+            $Username = "mattkopecki@gmail.com";
+            $Password = "ymadqdjghxeakbhq";
+
+            $mailbox = imap_open($ServerName, $Username, $Password) or die("Could not open Mailbox");
+
+            if ($hdr = imap_check($mailbox))
+            {
+                $msgCount = $hdr->Nmsgs;
+                $overview = imap_fetch_overview($mailbox,"1:$msgCount",0);
+                $size=sizeof($overview);
+
+                for($i=$size-1; $i>=0; $i--)
+                {
+                    if ($i == $selectedLi)  // then this is the selected message that we want to turn in to a list item
+                    {
+                        $sequence = $overview[$i]->msgno;
+                        $subject = $overview[$i]->subject;  // if this is the grabbed area, it will be the new task
+                        $from = $overview[$i]->from;    //if this is the grabbed area, the new task will have this
+                        $messageBody = imap_fetchbody($mailbox,$sequence,1);
+
+                        $success = create_list_item($subject, $messageBody, $_COOKIE["UserID"]);
+                        if ($success)
+                        {
+                            // move to archived mailbox
+                            imap_mail_move($mailbox, $sequence, '[Gmail]/All Mail');
+                            imap_expunge($mailbox);
+                        }
+                        else {
+                            // the message wasn't removed from the inbox but was successfully converted to a task
+                        }
+                    }
+                }
+            }
+
+            imap_close($mailbox);
+
+            ?>
+
+            <a href="#" class="close">close</a>
+        </div>
+    </div>
+</div>
+-->
 
 </div>  <!-- end #page -->
 

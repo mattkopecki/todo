@@ -74,3 +74,7 @@ function showElement(layer){
         myLayer.style.display="none";
     }
 }
+
+$(document).ready(function(){
+    $('.popbox').popbox();
+});
