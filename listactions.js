@@ -57,10 +57,20 @@ $(function() {
 // all lists with class connectedSortable to be connected and interoperable
 $(function() {
     $( "#sortable1, #sortable2" ).sortable({
-        connectWith: ".connectedSortable", opacity: 0.8, update: function() {
-            var order = $(this.value).sortable('serialize') + '&action=updateRecordsListings';
-            $.post("updateLists.php", order, function(theResponse){$("#resp").html(theResponse);
-        });
+        connectWith: ".connectedSortable", opacity: 1.0, update: function() {
+            var order = $(this).sortable('serialize') + '&action=updateRecordsListings';
+            $.post("updateLists.php", order);
         }
     }).disableSelection();
 });
+
+function showElement(layer){
+    var myLayer = document.getElementById(layer);
+    if(myLayer.style.display=="none"){
+        myLayer.style.display="block";
+        myLayer.backgroundPosition="top";
+    }
+    else {
+        myLayer.style.display="none";
+    }
+}

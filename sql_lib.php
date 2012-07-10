@@ -59,7 +59,7 @@
 
 	function list_contents($id)
 	{
-		$result = mysql_query("SELECT * FROM Tasks WHERE ListID='$id';");
+		$result = mysql_query("SELECT * FROM Tasks WHERE ListID =  '$id' ORDER BY  `Tasks`.`Order` ASC LIMIT 0 , 30;");
 		$retval = array();
 		while($row = mysql_fetch_array($result)){
 			array_push($retval, $row);

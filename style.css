@@ -4,6 +4,7 @@ body {
 	background: white;
 	font-family: 'Open Sans', sans-serif;
 	font-size: 14px;
+	border-bottom: 10px solid black;
 }
 
 h1, h2, h3 {
@@ -13,13 +14,16 @@ h1, h2, h3 {
 }
 
 h1 {
-	font-size: 2.4em;
+	font-size: 3.2em;
 	text-transform: uppercase;
 	font-weight: 900;
+	letter-spacing:-2px
 }
 
 h2 {
 	font-size: 2em;
+	text-transform: uppercase;
+	font-weight: 900;
 }
 
 h3 {
@@ -44,7 +48,8 @@ ul {
 }
 
 li {
-	background-color: transparent;
+	background-color: white;
+	margin: 10px auto;
 }
 
 li:hover {
@@ -94,7 +99,7 @@ a:hover {
 
 .column {
 	width: 450px;
-	height: 45%;
+	height: 60%;
 	overflow: auto;
 }
 
@@ -105,41 +110,44 @@ a:hover {
 
 .rightcol {
 	float: right;
-	border: 8px solid black;
-	padding: 0 20px;
+	width: 470px;
+	border: 10px solid black;
+	padding: 0 10px;
 }
 
 .bottom {
 	position:absolute;
-	bottom:5%;
-	border:8px solid black;
+	bottom: 0;
+	border: 10px solid black;
 	padding: 0 20px;
-	width: 930px;
-	min-height: 50px;
-	max-height: 30%;
+	width: 920px;
+	/*min-height: 50px;*/
+	height: 32%;
 	overflow: auto;
 	background:white;
 }
 
+
+/*
 .bottom:before {
     content:'';
     position:relative;
     bottom: 2px;
     height: 20px;
     width: 930px;
-    background:linear-gradient(top, white, transparent); /* standard CSS3 */
-    background:-o-linear-gradient(top, white, transparent); /* Opera */
-    background:-moz-linear-gradient(top, white, rgba(255, 255, 255, 0)); /* Firefox */
-    background:-ms-linear-gradient(top, white, transparent); /* IE 10 */
-    background:-webkit-linear-gradient(top, white, rgba(255, 255, 255, 0)); /* New Webkit */
-    background:-webkit-gradient(linear, left top, left bottom, from(white), to(rgba(255, 255, 255, 0))); /* Old Webkit */
+    background:linear-gradient(top, white, transparent); /* standard CSS3
+    background:-o-linear-gradient(top, white, transparent); /* Opera
+    background:-moz-linear-gradient(top, white, rgba(255, 255, 255, 0)); /* Firefox
+    background:-ms-linear-gradient(top, white, transparent); /* IE 10
+    background:-webkit-linear-gradient(top, white, rgba(255, 255, 255, 0)); /* New Webkit
+    background:-webkit-gradient(linear, left top, left bottom, from(white), to(rgba(255, 255, 255, 0))); /* Old Webkit
     z-index: 999;
 }
 
 .bottom:after {
 	content:'';
 	position:fixed;
-	bottom: 6%;
+	bottom: 3%;
 	height: 20px;
 	width: 930px;
 	background: linear-gradient(bottom, white, transparent);
@@ -150,6 +158,7 @@ a:hover {
 	background:-webkit-gradient(linear, left bottom, left top, from(white), to(rgba(255, 255, 255, 0)));
 	z-index: 999;
 }
+*/
 
 input[type="button"] {
 	background: transparent;
@@ -160,14 +169,18 @@ input[type="button"] {
 input[type="text"] {
     background: transparent;
     border: none;
-    height: 3em;
+    /*height: 3em;*/
     border-bottom: thin solid #C0C0C0;
    	font-weight: 900;
 	font-size: 14px;
    	font-family: 'Open Sans';
 }
 
-input.grey {
+.grey {
+	color: #C0C0C0;
+}
+
+.grey a {
 	color: #C0C0C0;
 }
 
@@ -196,11 +209,17 @@ input:focus {
 /* Menu */
 
 #menu {
-	width: 940px;
-	height: 20px;
+	width: 150px;
 	margin: 20px auto;
 	padding: 0;
 	background: clear;
+	position: fixed;
+	float: left;
+	color: transparent;
+}
+
+#menu:hover {
+	color: black;
 }
 
 #menu ul {
@@ -235,7 +254,7 @@ input:focus {
 }
 
 #menu .current_page_item a {
-	//background: url(images/img03.jpg) repeat-x left top;
+	/*background: url(images/img03.jpg) repeat-x left top;*/
 	color: #FF0000;
 }
 
@@ -248,8 +267,9 @@ input:focus {
 
 #page {
 	width: 980px;
-	margin: 0 auto;
-	padding: 0;
+	height: 100%;
+	padding: 00 0 00 200;
+	float: left;
 }
 
 /* Content */

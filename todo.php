@@ -4,25 +4,7 @@
     ini_set('display_errors', 'On');
     error_reporting(E_ALL | E_STRICT);
 
-    if (isset($_POST["userid"]) and isset($_POST["password"]))
-    {
-        $result = logon_user($_POST["userid"], $_POST["password"]);
-        $logged_in = FALSE;
-        if($result)
-        {
-            $logged_in = TRUE;
-            $UserID = $result["UserID"];
-            $UserName = $result["UserName"];
-            $email = $result["email"];
-            setcookie("UserID", $UserID);
-            header('Location: todo.php');
-        }
-        else
-        {
-            header('Location: login.php?success=no');
-        }
-    }
-    else if($_COOKIE["UserID"])
+    if(isset($_COOKIE["UserID"]))
     {
         $logged_in = TRUE;
         $UserID = $_COOKIE["UserID"];
@@ -56,14 +38,13 @@
 <div id="wrapper">
 
 	<div id="menu">
-		<ul>
-			<li><a href="index.php">Homepage</a></li>
+    <a href="#" style="color:#C0C0C0;" onclick="javascript:showElement('left-menu')"><span>&#x2759;&nbsp;&nbsp;Menu</span></a>
+		<ul id="left-menu" class="left-menu" style="display:none;">
+			<li><a style="color:#C0C0C0" href="index.php">Homepage</a></li>
 			<li class="current_page_item"><a href="todo.php">To Do</a></li>
-			<li><a href="tools.php">Archived</a></li>
-			<ri>
-                <a href="action.php">Gmail Login</a>
-                <a href="logout.php">Log Out</a>
-            </ri>
+			<li><a style="color:#C0C0C0" href="tools.php">Archived</a></li>
+			<li><a style="color:#C0C0C0" href="action.php">Gmail Login</a></li>
+            <li><a style="color:#C0C0C0" href="logout.php">Log Out</a></li>
 		</ul>
 	</div> <!-- end #menu -->
 
@@ -81,7 +62,7 @@
 	    {
 	    	$ListTitle = $list["Title"];
 	    	$ListID = $list["ListID"];
-	    	echo '<div style="clear:both"><h1>'.$ListTitle.'</h1>';
+	    	echo '<div style="margin-top:20px; clear:both;"><h2 style="display:inline;">'.$ListTitle.'</h2><input class="grey" type="button" id="add'.$ListID.'" value="&#x271A;" style="visibility:hidden; float:right; margin-top:13px; margin-right:16px;" onclick="addRow(\'list'.$ListID.'\')"/>';
 
 	    	$contents = list_contents($ListID);
 
@@ -94,11 +75,12 @@
 			$Title = $task["Title"];
 			$TaskID = $task["TaskID"];
 
-			echo '<li align="left">
+			echo '<li id="TaskID_'.$TaskID.'" align="left">
                 <div style="white-space:nowrap;">
-                    <input type="button" id="archive'.$TaskID.'" value="O" onclick="archive(\''.$TaskID.'\')" style="display:block; float:left;"/>
-                    <input class="grey" type="text" name="task[]" id="'.$TaskID.'" value="'.$Title.'" size="45" onkeypress="enterKeyPress(event,'.$ListID.');" onblur="saveTask('.$TaskID.','.$ListID.',this.value);">
-                    <input type="button" id="delete'.$TaskID.'" value="X" onclick="deleteRow(\'list'.$ListID.'\', \'t'.$TaskID.'\')" style="display:block; float:right;"/>
+                    :&nbsp;:&nbsp;
+                    <input class="grey" type="text" id="'.$TaskID.'" value="'.$Title.'" size="44" onkeypress="enterKeyPress(event,'.$ListID.');" onblur="saveTask('.$TaskID.','.$ListID.',this.value);">
+                    <input class="grey" type="button" id="archive'.$TaskID.'" value="&#x2714;" onclick="archive(\''.$TaskID.'\')" style="display:block; float:right;"/>
+                    <input class="grey" type="button" id="delete'.$TaskID.'" value="&#x2716;" onclick="deleteRow(\'list'.$ListID.'\', \'t'.$TaskID.'\')" style="display:block; float:right;"/>
                 </div>
                 </li>';
 
@@ -106,14 +88,13 @@
         echo '</ul>';
 		echo '</div>';
 		echo '</form>';
-		echo '<input type="button" id="add'.$ListID.'" value="Add Row" onclick="addRow(\'list'.$ListID.'\')"/>  </div>';
+		echo '</div>';
 	    }
 	}
 ?>
 </div>  <!-- end leftcol -->
 
 <div class="column rightcol">
-<h1>TO DO LIST</h1>
 <?php
 	$results = my_todo_list($_COOKIE["UserID"]);
 	if (count($results) == 0) { echo "<p>You have no Lists.</p>"; }
@@ -125,6 +106,7 @@
 	    	$ListID = $list["ListID"];
 
 	    	$contents = list_contents($ListID);
+            echo '<div><h1 style="display:inline">TO DO LIST</h1><input type="button" id="add'.$ListID.'" value="&#x271A;" style="visibility:hidden; float:right; margin-top:13px; margin-right:16px;" onclick="addRow(\'list'.$ListID.'\')"/></div>';
 
 		echo '<form action="todo.php" method="POST">';
 		echo '<div id="list'.$ListID.'" align="left" border="0"><ul id="sortable2" class="connectedSortable">';
@@ -134,18 +116,18 @@
 			$Title = $task["Title"];
 			$TaskID = $task["TaskID"];
 
-			echo '<li align="left">
+			echo '<li id="TaskID_'.$TaskID.'" align="left">
                 <div style="white-space:nowrap;">
-                    <input type="button" id="archive'.$TaskID.'" value="O" onclick="archive(\''.$TaskID.'\')" style="display:block; float:left;"/>
-                    <input type="text" name="task[]" id="'.$TaskID.'" value="'.$Title.'" size="45" onkeypress="enterKeyPress(event,'.$ListID.');" onblur="saveTask('.$TaskID.','.$ListID.',this.value);">
-                    <input type="button" id="delete'.$TaskID.'" value="X" onclick="deleteRow(\'list'.$ListID.'\', \'t'.$TaskID.'\')" style="display:block; float:right;"/>
+                    :&nbsp;:&nbsp;
+                    <input type="text" id="TaskID_'.$TaskID.'" value="'.$Title.'" size="47" onkeypress="enterKeyPress(event,'.$ListID.');" onblur="saveTask('.$TaskID.','.$ListID.',this.value);">
+                    <input type="button" id="archive_'.$TaskID.'" value="&#x2714;" onclick="archive(\''.$TaskID.'\')" style="display:block; float:right;"/>
+                    <input type="button" id="delete_'.$TaskID.'" value="&#x2716;" onclick="deleteRow(\'list'.$ListID.'\', \'t'.$TaskID.'\')" style="display:block; float:right;"/>
                 </div>
                 </li>';
 
         }
         echo '</ul></div>';
         echo '</form>';
-        echo '<input type="button" id="add'.$ListID.'" value="Add Row" onclick="addRow(\'list'.$ListID.'\')"/>';
 	    }
 	}
 ?>
@@ -159,102 +141,113 @@
 
     $mailbox = imap_open($ServerName, $Username, $Password) or die("Could not open Mailbox");
 
-    if ($hdr = imap_check($mailbox))
+    if ($header = imap_check($mailbox))
     {
-        $msgCount = $hdr->Nmsgs;
-        if ($msgCount == 0) { echo "<h1> INBOX ZERO </h1>"; }
-        else if ($msgCount == 1) { echo "<h1>1 MESSAGE</h1>"; }
-        else { echo "<h1>" . $hdr->Nmsgs . " MESSAGES</h1>"; }
+        $msgCount = $header->Nmsgs;
+        if ($msgCount == 0)
+        {
+            echo "<h1> INBOX ZERO </h1>";
+        }
+
+        else
+        {
+            // the gmail inbox has messages
+            if ($msgCount == 1) { echo "<h2>1 MESSAGE</h2>"; }
+            else { echo "<h1>" . $msgCount . " MESSAGES</h1>"; }
+
+            $overview = imap_fetch_overview($mailbox,"1:$msgCount",0);
+            $size=sizeof($overview);
+
+            echo '<dl id="sortable2" class="connectedSortable">';
+
+            for($i=$size-1; $i>=0; $i--)
+            {
+                $val = $overview[$i];
+                $sequence = $val->msgno;
+                $from = $val->from;
+                $date = $val->date;
+                $seen = $val->seen;
+                if ($val->subject) {$subject = $val->subject;} else $subject = "(no subject)";
+
+                $from = preg_replace("/\"/","",$from);
+
+                list($dayName,$day,$month,$year,$time) = preg_split("/ /",$date);
+                $time = substr($time,0,5);
+                $date = $year."-".$month."-".$day;
+
+                // convert the date display to a more natural format
+                if (date('Y-m-d') == date('Y-m-d', strtotime((string)$date)))
+                {
+                    $date = $time;
+                }
+                else if ($date < strtotime('-7 days'))
+                {
+                    if      (strcasecmp($dayName, "Mon,")==0) $date = "Monday";
+                    else if (strcasecmp($dayName, "Tue,")==0) $date = "Tuesday";
+                    else if (strcasecmp($dayName, "Wed,")==0) $date = "Wednesday";
+                    else if (strcasecmp($dayName, "Thu,")==0) $date = "Thursday";
+                    else if (strcasecmp($dayName, "Fri,")==0) $date = "Friday";
+                    else if (strcasecmp($dayName, "Sat,")==0) $date = "Saturday";
+                    else if (strcasecmp($dayName, "Sun,")==0) $date = "Sunday";
+                }
+                else
+                {
+                    $date = $month."-".$day."-".$year;
+                }
+
+                // check for any emails from Captio
+                preg_match('/\b(capt\w+)\b/', $from, $match);
+                if ($match)
+                {
+                    $messageBody = imap_fetchbody($mailbox,$sequence,1);
+                    $success = parse_from_captio($subject, $messageBody, $_COOKIE["UserID"]);
+                    if ($success)
+                    {
+                        imap_mail_move($mailbox, $sequence, '[Gmail]/All Mail');
+                        imap_expunge($mailbox);
+                        continue;  // process the next message and don't add this one to the Messages box
+                    }
+                    else {
+                        continue;
+                    }
+                }
+
+                if (strlen($subject) > 60)
+                {
+                    $subject = substr($subject,0,59) ."...";
+                }
+
+                //$body = imap_fetchbody($mailbox,$sequence,1); // this is slow. I need some way to only get the body on demand
+                $body = 'this text is a placeholder for the body of the message';
+
+                if (strlen($body) > 60)
+                {
+                    $body = substr($body,0,59) ."...";
+                }
+
+                echo '<div>
+                    <dt>
+                        <div style="white-space:nowrap; display:block;">
+                        <span class="from">'.$from.'</span>
+                        <span class="maildate">'.$date.'</span>
+                        </div>
+                    </dt>
+                    <dd>
+                        <div class="subject">'.$subject.'</div>
+                        <div class="mailbody">'.$body.'</div>
+                    </dd>
+                    </div>';
+            }
+
+            echo '</dl>';
+
+        }
+
     }
     else
     {
     	echo "failed";
     }
-    $overview = imap_fetch_overview($mailbox,"1:$msgCount",0);
-    $size=sizeof($overview);
-
-    echo '<dl id="sortable2" class="connectedSortable">';
-
-    for($i=$size-1; $i>=0; $i--)
-    {
-    	$val = $overview[$i];
-        $sequence = $val->msgno;
-    	$from = $val->from;
-    	$date = $val->date;
-    	$seen = $val->seen;
-        if ($val->subject) {$subject = $val->subject;} else $subject = "(no subject)";
-
-        $from = preg_replace("/\"/","",$from);
-
-    	list($dayName,$day,$month,$year,$time) = preg_split("/ /",$date);
-        $time = substr($time,0,5);
-        $date = $year."-".$month."-".$day;
-
-        // convert the date display to a more natural format
-        if (date('Y-m-d') == date('Y-m-d', strtotime((string)$date)))
-        {
-            $date = $time;
-        }
-        else if ($date < strtotime('-7 days'))
-        {
-            if (strcasecmp($dayName, "Mon,")==0) $date = "Monday";
-            else if (strcasecmp($dayName, "Tue,")==0) $date = "Tuesday";
-            else if (strcasecmp($dayName, "Wed,")==0) $date = "Wednesday";
-            else if (strcasecmp($dayName, "Thu,")==0) $date = "Thursday";
-            else if (strcasecmp($dayName, "Fri,")==0) $date = "Friday";
-            else if (strcasecmp($dayName, "Sat,")==0) $date = "Saturday";
-            else if (strcasecmp($dayName, "Sun,")==0) $date = "Sunday";
-        }
-        else
-        {
-            $date = $month."-".$day."-".$year;
-        }
-
-        // check for any emails from Captio
-        preg_match('/\b(capt\w+)\b/', $from, $match);
-        if ($match)
-        {
-            $messageBody = imap_fetchbody($mailbox,$sequence,1);
-            $success = parse_from_captio($subject, $messageBody, $_COOKIE["UserID"]);
-            if ($success)
-            {
-                imap_mail_move($mailbox, $sequence, '[Gmail]/All Mail');
-                imap_expunge($mailbox);
-                continue;  // process the next message and don't add this one to the Messages box
-            }
-            else {
-                continue;
-            }
-        }
-
-        if (strlen($subject) > 60)
-        {
-        	$subject = substr($subject,0,59) ."...";
-        }
-
-        //$body = imap_fetchbody($mailbox,$sequence,1);	// this is slow. I need some way to only get the body on demand
-        $body = 'this text is a placeholder for the body of the message';
-
-        if (strlen($body) > 60)
-        {
-        	$body = substr($body,0,59) ."...";
-        }
-
-    	echo '<div>
-            <dt>
-                <div style="white-space:nowrap; display:block;">
-                <span class="from">'.$from.'</span>
-                <span class="maildate">'.$date.'</span>
-                </div>
-            </dt>
-            <dd>
-                <div class="subject">'.$subject.'</div>
-                <div class="mailbody">'.$body.'</div>
-            </dd>
-            </div>';
-    }
-
-    echo '</dl>';
 
     imap_close($mailbox);
 ?>

@@ -2,7 +2,7 @@
 	require("sql_lib.php");
 
 	$action = mysql_real_escape_string($_POST['action']);
-	$updateRecordsArray = $_POST['recordsArray'];
+	$updateRecordsArray = $_POST['TaskID'];
 
 	if ($action == "updateRecordsListings")
 	{
@@ -11,7 +11,7 @@
 		foreach ($updateRecordsArray as $TaskID)
 		{
 
-			$query = "UPDATE Tasks SET Order = " . $listingCounter . " WHERE TaskID = " . $TaskID;
+			$query = "UPDATE `Tasks` SET `Order`='$listingCounter' WHERE `TaskID` = '$TaskID';";
 			mysql_query($query) or die('Error, insert query failed');
 			$listingCounter = $listingCounter + 1;
 		}

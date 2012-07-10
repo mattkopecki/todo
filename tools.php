@@ -1,28 +1,10 @@
 <?php
 	require 'sql_lib.php';
 
-    ini_set('display_errors', 'On');
-    error_reporting(E_ALL | E_STRICT);
+    //ini_set('display_errors', 'On');
+    //error_reporting(E_ALL | E_STRICT);
 
-    if (isset($_POST["userid"]) and isset($_POST["password"]))
-    {
-        $result = logon_user($_POST["userid"], $_POST["password"]);
-        $logged_in = FALSE;
-        if($result)
-        {
-            $logged_in = TRUE;
-            $UserID = $result["UserID"];
-            $UserName = $result["UserName"];
-            $email = $result["email"];
-            setcookie("UserID", $UserID);
-            header('Location: todo.php');
-        }
-        else
-        {
-            header('Location: login.php?success=no');
-        }
-    }
-    else if($_COOKIE["UserID"])
+    if(isset($_COOKIE["UserID"]))
     {
         $logged_in = TRUE;
         $UserID = $_COOKIE["UserID"];
@@ -56,7 +38,8 @@
 <div id="wrapper">
 
 	<div id="menu">
-		<ul>
+        <a href="#" style="color:#C0C0C0;" onclick="javascript:showElement('left-menu')"><span>Menu</span></a>
+        <ul id="left-menu" class="left-menu" style="display:none;">
 			<li><a href="index.php">Homepage</a></li>
 			<li><a href="todo.php">To Do</a></li>
 			<li class="current_page_item"><a href="tools.php">Archived</a></li>
