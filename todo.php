@@ -40,9 +40,9 @@
 <div id="wrapper">
 
 	<div id="menu">
-    <a href="#" style="color:#C0C0C0;" onclick="javascript:showElement('left-menu')"><span>&#x2759;&nbsp;&nbsp;Menu</span></a>
+    <a href="#" onclick="javascript:showElement('left-menu')"><span>&#x2759;&nbsp;&nbsp;Menu</span></a>
 		<ul id="left-menu" class="left-menu" style="display:none;">
-			<li><a style="color:#C0C0C0" href="index.php">Homepage</a></li>
+			<li><a href="index.php">Homepage</a></li>
 			<li class="current_page_item"><a href="todo.php">To Do</a></li>
 			<li><a style="color:#C0C0C0" href="tools.php">Archived</a></li>
 			<li><a style="color:#C0C0C0" href="action.php">Gmail Login</a></li>

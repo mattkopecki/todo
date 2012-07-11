@@ -246,7 +246,7 @@ input:focus {
 	font-size: 14px;
 	font-weight: normal;
 	border: none;
-	color: black;
+	color: #C0C0C0;
 }
 
 #menu .current_page_item a {
