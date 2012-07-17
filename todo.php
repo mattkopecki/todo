@@ -44,15 +44,13 @@
 		<ul id="left-menu" class="left-menu" style="display:none;">
 			<li><a href="index.php">Homepage</a></li>
 			<li class="current_page_item"><a href="todo.php">To Do</a></li>
-			<li><a style="color:#C0C0C0" href="tools.php">Archived</a></li>
-			<li><a style="color:#C0C0C0" href="action.php">Gmail Login</a></li>
-            <li><a style="color:#C0C0C0" href="logout.php">Log Out</a></li>
+			<li><a href="tools.php">Archived</a></li>
+			<li><a href="action.php">Gmail Login</a></li>
+            <li><a href="logout.php">Log Out</a></li>
 		</ul>
 	</div> <!-- end #menu -->
 
 <div id="page">
-
-<div id="resp"></div> <!-- this is where the response from the list rearrangement updates will show up -->
 
 <div class="column leftcol">
 <?php
@@ -148,19 +146,18 @@
         $msgCount = $header->Nmsgs;
         if ($msgCount == 0)
         {
-            echo "<h1> INBOX ZERO </h1>";
+            echo "<h2> INBOX ZERO </h2>";
         }
-
         else
         {
             // the gmail inbox has messages
             if ($msgCount == 1) { echo "<h2>1 MESSAGE</h2>"; }
-            else { echo "<h1>" . $msgCount . " MESSAGES</h1>"; }
+            else { echo "<h2>" . $msgCount . " MESSAGES</h2>"; }
 
             $overview = imap_fetch_overview($mailbox,"1:$msgCount",0);
             $size=sizeof($overview);
 
-            echo '<dl id="sortable2" class="connectedSortable">';
+            echo '<dl id="draggable2">';
 
             for($i=$size-1; $i>=0; $i--)
             {
@@ -170,6 +167,7 @@
                 $date = $val->date;
                 $seen = $val->seen;
                 if ($val->subject) {$subject = $val->subject;} else $subject = "(no subject)";
+                $UID = imap_uid($mailbox, $sequence);
 
                 $from = preg_replace("/\"/","",$from);
 
@@ -227,7 +225,7 @@
                     $body = substr($body,0,59) ."...";
                 }
 
-                echo '<div>
+                echo '<div id='.$UID.'>
                     <dt>
                         <div style="white-space:nowrap; display:block;">
                         <span class="from">'.$from.'</span>

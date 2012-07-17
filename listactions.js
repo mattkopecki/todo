@@ -62,6 +62,20 @@ $(function() {
             $.post("updateLists.php", order);
         }
     }).disableSelection();
+
+    $( "#draggable2" ).draggable({ revert: "invalid" });
+    $( "#sortable1, #sortable2" ).droppable({
+        accept: "#draggable2",
+        activeClass: "ui-state-active",
+        hoverClass: "ui-state-hover",
+        drop: function( event, ui ) {
+            $( this )
+                .addClass( "ui-state-highlight" )
+                .find( "p" )
+                    .html( "Dropped!" );
+        }
+    });
+
 });
 
 function showElement(layer){
