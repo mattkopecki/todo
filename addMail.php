@@ -19,10 +19,13 @@
         $overview = imap_fetch_overview($mailbox, $messageNumber,0);
 
         $from = $overview[0]->from;
-        $subject = $overview[0]->subject;
-        $messageBody = imap_fetchbody($mailbox,$messageNumber,1);
-
         $from = preg_replace('#\<.*?\>#s','',$from);
+
+        $subject = $overview[0]->subject;
+
+        // this isn't working right now. it has to do with the message types and the correct sequence number (here 1.1 and 1)
+        //$messageBody = imap_fetchbody($mailbox,$UID,1.1,FT_UID);
+		//if(!strlen($bodyText)>0){ $messageBody = imap_fetchbody($mailbox,$UID,1,FT_UID); }
 
         //$text = $from.": ".$subject." -- ".$messageBody;
 		$text = "Reply to ".$from."- ".$subject;

@@ -29,7 +29,7 @@ function saveTask(itemId,listId,textValue) {
         var taskvalue=encodeURIComponent(itemId);
         var listvalue=encodeURIComponent(listId);
         var textvalue=encodeURIComponent(textValue);
-        mygetrequest.open("GET", "additem.php?taskid="+taskvalue+"&listid="+listvalue+"&text="+textvalue, true);
+        mygetrequest.open("GET", "saveTask.php?taskid="+taskvalue+"&listid="+listvalue+"&text="+textvalue, true);
         mygetrequest.send(null);
 }
 

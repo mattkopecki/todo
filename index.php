@@ -63,7 +63,7 @@
 
             <?php
 			echo $logged_in ? "<li><a href=\"todo.php\">To Do</a></li>" : "";
-			echo $logged_in ? "<li><a href=\"tools.php\">Tools</a></li>" : "";
+			echo $logged_in ? "<li><a href=\"archived.php\">Tools</a></li>" : "";
 			?>
 
 			<?php if ($logged_in) {echo "<ri><a href=\"logout.php\">Log Out</a></ri>";} else {echo "<ri><a href=\"login.php\">Log In</a></ri>";} ?>
