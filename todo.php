@@ -52,6 +52,9 @@
 
 <div id="page">
 
+<?php
+?>
+
 <div class="column leftcol">
 <?php
 	$results = my_lists($_COOKIE["UserID"]);
@@ -157,7 +160,7 @@
             $overview = imap_fetch_overview($mailbox,"1:$msgCount",0);
             $size=sizeof($overview);
 
-            echo '<dl id="draggable2">';
+            echo '<dl>';
 
             for($i=$size-1; $i>=0; $i--)
             {
@@ -195,23 +198,6 @@
                     $date = $month."-".$day."-".$year;
                 }
 
-                // check for any emails from Captio
-                preg_match('/\b(capt\w+)\b/', $from, $match);
-                if ($match)
-                {
-                    $messageBody = imap_fetchbody($mailbox,$sequence,1);
-                    $success = parse_from_captio($subject, $messageBody, $_COOKIE["UserID"]);
-                    if ($success)
-                    {
-                        imap_mail_move($mailbox, $sequence, '[Gmail]/All Mail');
-                        imap_expunge($mailbox);
-                        continue;  // process the next message and don't add this one to the Messages box
-                    }
-                    else {
-                        continue;
-                    }
-                }
-
                 if (strlen($subject) > 60)
                 {
                     $subject = substr($subject,0,59) ."...";
@@ -225,7 +211,7 @@
                     $body = substr($body,0,59) ."...";
                 }
 
-                echo '<div id='.$UID.'>
+                echo '<div id='.$UID.' class="draggable2">
                     <dt>
                         <div style="white-space:nowrap; display:block;">
                         <span class="from">'.$from.'</span>
@@ -252,63 +238,6 @@
     imap_close($mailbox);
 ?>
 </div>  <!-- end bottom -->
-
-<!--
-<div class='popbox' style="visibility:hidden;">
-    <a class='open' href='#'>Click Here!</a>
-
-    <div class='collapse'>
-        <div class='box'>
-
-            <?php
-
-            //need to set the message number of the selected message
-            //$selectedLi = ;
-
-            $ServerName = "{imap.gmail.com:993/imap/ssl}INBOX";
-            $Username = "mattkopecki@gmail.com";
-            $Password = "ymadqdjghxeakbhq";
-
-            $mailbox = imap_open($ServerName, $Username, $Password) or die("Could not open Mailbox");
-
-            if ($hdr = imap_check($mailbox))
-            {
-                $msgCount = $hdr->Nmsgs;
-                $overview = imap_fetch_overview($mailbox,"1:$msgCount",0);
-                $size=sizeof($overview);
-
-                for($i=$size-1; $i>=0; $i--)
-                {
-                    if ($i == $selectedLi)  // then this is the selected message that we want to turn in to a list item
-                    {
-                        $sequence = $overview[$i]->msgno;
-                        $subject = $overview[$i]->subject;  // if this is the grabbed area, it will be the new task
-                        $from = $overview[$i]->from;    //if this is the grabbed area, the new task will have this
-                        $messageBody = imap_fetchbody($mailbox,$sequence,1);
-
-                        $success = create_list_item($subject, $messageBody, $_COOKIE["UserID"]);
-                        if ($success)
-                        {
-                            // move to archived mailbox
-                            imap_mail_move($mailbox, $sequence, '[Gmail]/All Mail');
-                            imap_expunge($mailbox);
-                        }
-                        else {
-                            // the message wasn't removed from the inbox but was successfully converted to a task
-                        }
-                    }
-                }
-            }
-
-            imap_close($mailbox);
-
-            ?>
-
-            <a href="#" class="close">close</a>
-        </div>
-    </div>
-</div>
--->
 
 </div>  <!-- end #page -->
 

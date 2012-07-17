@@ -1,3 +1,7 @@
+html {
+	min-height: 100%;
+}
+
 body {
 	margin: 0;
 	padding: 0;
@@ -129,28 +133,28 @@ a:hover {
 }
 
 
-/*
+
 .bottom:before {
     content:'';
     position:relative;
-    bottom: 2px;
+	top: 10px;
     height: 20px;
-    width: 930px;
-    background:linear-gradient(top, white, transparent); /* standard CSS3
-    background:-o-linear-gradient(top, white, transparent); /* Opera
-    background:-moz-linear-gradient(top, white, rgba(255, 255, 255, 0)); /* Firefox
-    background:-ms-linear-gradient(top, white, transparent); /* IE 10
-    background:-webkit-linear-gradient(top, white, rgba(255, 255, 255, 0)); /* New Webkit
-    background:-webkit-gradient(linear, left top, left bottom, from(white), to(rgba(255, 255, 255, 0))); /* Old Webkit
+    width: 920px;
+    background:linear-gradient(top, white, transparent); /* standard CSS3 */
+    background:-o-linear-gradient(top, white, transparent); /* Opera */
+    background:-moz-linear-gradient(top, white, rgba(255, 255, 255, 0)); /* Firefox */
+    background:-ms-linear-gradient(top, white, transparent); /* IE 10 */
+    background:-webkit-linear-gradient(top, white, rgba(255, 255, 255, 0)); /* New Webkit */
+    background:-webkit-gradient(linear, left top, left bottom, from(white), to(rgba(255, 0, 0, 0))); /* Old Webkit */
     z-index: 999;
 }
 
 .bottom:after {
 	content:'';
 	position:fixed;
-	bottom: 3%;
+	bottom: 10px;
 	height: 20px;
-	width: 930px;
+	width: 920px;
 	background: linear-gradient(bottom, white, transparent);
 	background:-o-linear-gradient(bottom, white, transparent);
 	background:-ms-linear-gradient(bottom, white, transparent);
@@ -159,7 +163,7 @@ a:hover {
 	background:-webkit-gradient(linear, left bottom, left top, from(white), to(rgba(255, 255, 255, 0)));
 	z-index: 999;
 }
-*/
+
 
 input[type="button"] {
 	background: transparent;
@@ -202,25 +206,26 @@ input:focus {
 
 /* jQuery Interaction states
 ----------------------------------*/
-.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default { border: 1px solid #d3d3d3; background: #e6e6e6; font-weight: normal; color: #555555; }
-.ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited { color: #555555; text-decoration: none; }
-.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus { border: 1px solid #999999; background: #dadada; color: #212121; }
-.ui-state-hover a, .ui-state-hover a:hover { color: #212121; text-decoration: none; }
-.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active { background: yellow; color: yellow; }
+.ui-state-default { border: 1px solid #d3d3d3; background: #e6e6e6; font-weight: normal; color: #555555; }
+.ui-state-default a { color: #555555; text-decoration: none; }
+.ui-state-active { background: yellow; color: yellow; z-index: 9999;}
 .ui-state-active * { background: yellow; color: yellow; }
 .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited { color: #212121; text-decoration: none; }
 .ui-widget :active { outline: none; }
+.ui-state-hover, .ui-state-focus { background: blue; color: blue; }
+.ui-state-hover *, .ui-state-focus * { background: blue; color: blue; }
+.ui-state-hover a, .ui-state-hover a:hover { color: #212121; text-decoration: none; }
 
 /* jQuery Interaction Cues
 ----------------------------------*/
-.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight  {border: 1px solid #fcefa1; background: #fbf9ee; color: #363636; }
-.ui-state-highlight a, .ui-widget-content .ui-state-highlight a,.ui-widget-header .ui-state-highlight a { color: #363636; }
-.ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error {border: 1px solid #cd0a0a; background: #fef1ec; color: #cd0a0a; }
-.ui-state-error a, .ui-widget-content .ui-state-error a, .ui-widget-header .ui-state-error a { color: #cd0a0a; }
-.ui-state-error-text, .ui-widget-content .ui-state-error-text, .ui-widget-header .ui-state-error-text { color: #cd0a0a; }
-.ui-priority-primary, .ui-widget-content .ui-priority-primary, .ui-widget-header .ui-priority-primary { font-weight: bold; }
-.ui-priority-secondary, .ui-widget-content .ui-priority-secondary,  .ui-widget-header .ui-priority-secondary { opacity: .7; filter:Alpha(Opacity=70); font-weight: normal; }
-.ui-state-disabled, .ui-widget-content .ui-state-disabled, .ui-widget-header .ui-state-disabled { opacity: .35; filter:Alpha(Opacity=35); background-image: none; }
+.ui-state-highlight {border: 1px solid #fcefa1; background: #fbf9ee; color: #363636; }
+.ui-state-highlight a { color: #363636; }
+.ui-state-error {border: 1px solid #cd0a0a; background: #fef1ec; color: #cd0a0a; }
+.ui-state-error a { color: #cd0a0a; }
+.ui-state-error-text { color: #cd0a0a; }
+.ui-priority-primary { font-weight: bold; }
+.ui-priority-secondary { opacity: .7; filter:Alpha(Opacity=70); font-weight: normal; }
+.ui-state-disabled { opacity: .35; filter:Alpha(Opacity=35); background-image: none; }
 
 
 #wrapper {

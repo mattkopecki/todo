@@ -63,21 +63,29 @@ $(function() {
         }
     }).disableSelection();
 
-    $( "#draggable2" ).draggable({ revert: "invalid" });
+    $( ".draggable2" ).draggable({
+        revert: "invalid" ,
+        containment: 'document',
+        helper: 'clone',
+        opacity: 0.70,
+        zIndex:10000,
+        appendTo: "body"
+    });
     $( "#sortable1, #sortable2" ).droppable({
-        accept: "#draggable2",
+        accept: ".draggable2",
         activeClass: "ui-state-active",
         hoverClass: "ui-state-hover",
         drop: function( event, ui ) {
-            $( this )
-                .addClass( "ui-state-highlight" )
-                .find( "p" )
-                    .html( "Dropped!" );
+            $( this ).addClass( "ui-state-highlight" );
+            var list = $( this).closest("div").attr("id");
+            var mailID = ui.draggable.attr("id");
+            $.post("addMail.php", {ListID: list, MailID: mailID}, function(){window.location.reload();});
         }
     });
 
 });
 
+// shows and hides the menu
 function showElement(layer){
     var myLayer = document.getElementById(layer);
     if(myLayer.style.display=="none"){

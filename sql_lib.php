@@ -143,8 +143,9 @@
 	            $val = $overview[$i];
 	            $sequence = $val->msgno;
 	            $from = $val->from;
+                $from = preg_replace("/\"/","",$from);
 
-	            preg_match('/\b(captio\w+)\b/', $from, $match);
+                preg_match('/\b(capt\w+)\b/', $from, $match);
 	            if ($match)
 	            {
 	                $subject = $val->subject;
@@ -166,6 +167,7 @@
 
 	    imap_close($mailbox);
 	}
+
 
 /*
 	function song_exists($Title,$Artist)
