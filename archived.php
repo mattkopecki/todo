@@ -43,7 +43,6 @@
             <li><a href="index.php">Homepage</a></li>
             <li><a href="todo.php">To Do</a></li>
             <li class="current_page_item"><a href="archived.php">Archived</a></li>
-            <li><a href="action.php">Gmail Login</a></li>
             <li><a href="logout.php">Log Out</a></li>
         </ul>
 	</div> <!-- end #menu -->

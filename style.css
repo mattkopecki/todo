@@ -239,7 +239,7 @@ input:focus {
 
 #menu {
 	width: 150px;
-	margin: 20px auto;
+	margin: 20px 0 0 0;
 	padding: 0;
 	background: clear;
 	position: fixed;
@@ -261,7 +261,7 @@ input:focus {
 	letter-spacing: -1px;
 	text-decoration: none;
 	text-transform: uppercase;
-	font-size: 14px;
+	font-size: 1.2em;
 	font-weight: normal;
 	border: none;
 	color: #C0C0C0;
@@ -282,7 +282,7 @@ input:focus {
 #page {
 	width: 980px;
 	height: 100%;
-	padding: 00 0 00 200;
+	padding: 0 0 0 170;
 	float: left;
 }
 
