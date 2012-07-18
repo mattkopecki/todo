@@ -18,7 +18,6 @@
     check_for_captio();
 ?>
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta name="keywords" content="" />
@@ -52,9 +51,6 @@
 
 <div id="page">
 
-<?php
-?>
-
 <div class="column leftcol">
 <?php
 	$results = my_lists($_COOKIE["UserID"]);
@@ -81,12 +77,11 @@
 			echo '<li id="TaskID_'.$TaskID.'" align="left">
                 <div style="white-space:nowrap;">
                     :&nbsp;:&nbsp;
-                    <input class="grey" type="text" id="'.$TaskID.'" value="'.$Title.'" size="44" onkeypress="enterKeyPress(event,'.$ListID.');" onblur="saveTask('.$TaskID.','.$ListID.',this.value);">
+                    <input class="grey" type="text" id="'.$TaskID.'" value="'.$Title.'" size="45" onkeypress="enterKeyPress(event,'.$ListID.');" onblur="saveTask('.$TaskID.','.$ListID.',this.value);">
                     <input class="grey" type="button" id="archive'.$TaskID.'" value="&#x2714;" onclick="archive(\''.$TaskID.'\')" style="display:block; float:right;"/>
                     <input class="grey" type="button" id="delete'.$TaskID.'" value="&#x2716;" onclick="deleteRow(\'list'.$ListID.'\', \'t'.$TaskID.'\')" style="display:block; float:right;"/>
                 </div>
                 </li>';
-
 		}
         echo '</ul>';
 		echo '</div>';
@@ -127,7 +122,6 @@
                     <input type="button" id="delete_'.$TaskID.'" value="&#x2716;" onclick="deleteRow(\'list'.$ListID.'\', \'t'.$TaskID.'\')" style="display:block; float:right;"/>
                 </div>
                 </li>';
-
         }
         echo '</ul></div>';
         echo '</form>';
@@ -225,11 +219,8 @@
                     </dd>
                     </div>';
             }
-
             echo '</dl>';
-
         }
-
     }
     else
     {

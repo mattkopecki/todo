@@ -9,6 +9,7 @@ body {
 	font-family: 'Open Sans', sans-serif;
 	font-size: 14px;
 	border-bottom: 10px solid black;
+	font-weight: 400;
 }
 
 h1, h2, h3 {
@@ -21,13 +22,15 @@ h1 {
 	font-size: 3.2em;
 	text-transform: uppercase;
 	font-weight: 900;
-	letter-spacing:-2px
+	letter-spacing:-3px
 }
 
 h2 {
 	font-size: 2em;
 	text-transform: uppercase;
 	font-weight: 900;
+	letter-spacing:-1px
+
 }
 
 h3 {
@@ -168,7 +171,7 @@ a:hover {
 
 input[type="button"] {
 	background: transparent;
-	border:1px solid;
+	border:0;
 	border-color: #C0C0C0;
 }
 
@@ -177,7 +180,7 @@ input[type="text"] {
     border: none;
     /*height: 3em;*/
     border-bottom: thin solid #C0C0C0;
-   	font-weight: 900;
+   	font-weight: 400;
 	font-size: 14px;
    	font-family: 'Open Sans';
 }
