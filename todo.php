@@ -198,11 +198,12 @@
                     $date = $month."-".$day."-".$year;
                 }
 
-                if (strlen($subject) > 60)
+                if (strlen($subject) > 120)
                 {
-                    $subject = substr($subject,0,59) ."...";
+                    $subject = substr($subject,0,119) ."...";
                 }
 
+                /* // remove all body logic from the inbox
                 //$body = imap_fetchbody($mailbox,$sequence,1); // this is slow. I need some way to only get the body on demand
                 $body = 'this text is a placeholder for the body of the message';
 
@@ -210,6 +211,7 @@
                 {
                     $body = substr($body,0,59) ."...";
                 }
+                // also put this in the <dd> right after the subject div <div class="mailbody">'.$body.'</div>*/
 
                 echo '<div id='.$UID.' class="draggable2">
                     <dt>
@@ -220,7 +222,6 @@
                     </dt>
                     <dd>
                         <div class="subject">'.$subject.'</div>
-                        <div class="mailbody">'.$body.'</div>
                     </dd>
                     </div>';
             }

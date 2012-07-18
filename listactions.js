@@ -1,4 +1,3 @@
-
 function addRow(listID) {
     var list = listID;
     $.post("add.php", {ListID: list}, function(){window.location.reload();});
@@ -52,9 +51,7 @@ $(function() {
     });
 });
 
-
-// this function enables jQuery sortable for the lists with the ids #sortable1 and #sortable2, and allows
-// all lists with class connectedSortable to be connected and interoperable
+// jQuery sortable, draggable, and droppable
 $(function() {
     $( "#sortable1, #sortable2" ).sortable({
         connectWith: ".connectedSortable", opacity: 1.0, update: function() {
@@ -68,9 +65,10 @@ $(function() {
         containment: 'document',
         helper: 'clone',
         opacity: 0.70,
-        zIndex:10000,
+        zIndex: 10000,
         appendTo: "body"
     });
+
     $( "#sortable1, #sortable2" ).droppable({
         accept: ".draggable2",
         activeClass: "ui-state-active",
@@ -85,6 +83,14 @@ $(function() {
 
 });
 
+$(function() {
+    $( ".column" ).resizable({
+        alsoResize: ".bottom",
+        handles: "s"
+    });
+    $( ".bottom" ).resizable();
+});
+
 // shows and hides the menu
 function showElement(layer){
     var myLayer = document.getElementById(layer);
@@ -96,7 +102,3 @@ function showElement(layer){
         myLayer.style.display="none";
     }
 }
-
-$(document).ready(function(){
-    $('.popbox').popbox();
-});

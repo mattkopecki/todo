@@ -34,7 +34,7 @@
 <script src="listactions.js" type="text/javascript"></script>
 </head>
 
-<body>
+<body style="border:none;">
 <div id="wrapper">
 
 	<div id="menu">
